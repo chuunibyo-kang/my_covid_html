@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+ 
+        .bigbox{
+            box-sizing: border-box;
+            width: 1000px;
+            height: 400px;
+            margin: 200px auto;
+        }
+ 
+        .map{
+            box-sizing: border-box;
+            width: 1000px;
+            height: 50px;
+        }
+ 
+        .neirong{
+            width: 1000px;
+            height: 350px;
+            background-color: rgb(180, 219, 255);
+        }
+ 
+        li{
+            box-sizing: border-box;
+            float: left;
+            width: 250px;
+            height: 50px;
+            background-color: rgb(230, 226, 226);
+            list-style: none;
+            border-top: 1px solid;
+            border-bottom: 1px solid;
+            border-color: rgb(59, 59, 59);
+            text-align: center;
+            line-height: 48px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+ 
+        li:nth-child(1){
+            border-left: 1px solid;
+            border-color: rgb(59, 59, 59);
+        }
+ 
+        li:nth-child(4){
+            border-right: 1px solid;
+            border-color: rgb(59, 59, 59);
+        }
+ 
+        .choose{
+            background-color: rgb(216, 0, 0);
+            color: rgb(255, 255, 255);
+        }
+ 
+        .neirong{
+            padding: 20px;
+            box-sizing: border-box;
+        }
+ 
+        .neirong div{
+            font-size: 30px;
+        }
+       
+    </style>
+</head>
+<body>
+   <div class="bigbox">
+        <div class="map">
+            <ul>
+                <li class="choose">商品介绍</li>
+                <li>规格与包装</li>
+                <li>售后保障</li>
+                <li>商品评价</li>
+            </ul>
+        </div>
+        <div class="neirong">
+            <div style="display:block">此处为商品介绍内容</div>
+            <div style="display: none;">此处为规格与包装内容</div>
+            <div  style="display: none;">此处为售后保障内容</div>
+            <div  style="display: none;">此处为商品评价内容</div>
+        </div>
+   </div>
+   <script>
+       var lis=document.querySelector('ul').querySelectorAll('li');
+       var divs=document.querySelector('.neirong').querySelectorAll('div');
+       for(var i=0;i<lis.length;i++){
+           lis[i].setAttribute('index',i);
+           lis[i].onclick=function(){
+               for(var i=0;i<lis.length;i++){
+                   lis[i].className='';
+               }
+               this.className='choose';
+               var index=this.getAttribute('index');
+               for(var i=0;i<divs.length;i++){
+                   divs[i].style.display='none';
+               }
+               divs[index].style.display='block';
+           }
+       }
+   </script>
+</body>
+</html>
