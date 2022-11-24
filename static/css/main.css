@@ -1,0 +1,76 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+/* 首页信息设置 */
+#index_information h3{
+    text-align: center;
+}
+
+#index_information #request_model{
+    text-align: center;
+    margin:0 auto;
+    font-size: 25px;
+}
+
+#index_information #request_model th{
+    padding-left: 5px;
+    padding-right: 20px;
+}
+
+
+/* 疫情整体信息表格整体设置 */
+#covid_information_table table{
+    text-align:center; 
+    margin:0 auto;
+    border:none;
+    font-size: 20px;
+}
+
+/* 疫情整体信息表的表头设置 */
+#covid_information_table table tr th{
+    border-collapse: separate;
+    padding-left: 20px;
+}
+
+/* 疫情整体信息表的表格设置 */
+#covid_information_table table tr td{
+    color: red;
+    font-size: 30px;
+    padding-left: 5px;
+}
+
+
+/* 可视化地图设置 */
+#visual_China_map{
+    height: 500px; 
+}
+
+/* 近五日整体趋势图设置  */
+#current_overall_line_map{
+    height: 500px;
+    margin: 0 auto;
+}
+
+/* 近五日每日情况图设置 */
+#current_daily_line_map{
+    height: 500px; 
+    margin:0 auto;
+}
+
+/* 累计确诊TOP5设置 */
+#total_confirm_top5_data_map{
+    height: 500px; 
+    margin:0 auto;
+}
+
+/* 今日确诊TOP5设置 */
+#today_confirm_add_top5_data_map{
+    height: 500px; 
+    margin: 0 auto;
+}
+
+.ICP_number{
+    text-align:center
+}
