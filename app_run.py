@@ -97,8 +97,6 @@ def rcurrent_overall_line_map():
             update_date = update_date(),
             )
 
-
-
 #设置近期新增数据折线图json数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
 # 初始化近期新增数据折线图，并将图的数据转化为json，用于html页面调用echarts再次生成
@@ -116,7 +114,6 @@ def current_daily_line_map():
             update_date = update_date(),
             )
 
-
 #设置累计确诊TOP5柱状图数据json数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
 # 初始化累计确诊TOP5柱状图，并将图的数据转化为json，用于html页面调用echarts再次生成
@@ -133,7 +130,6 @@ def total_confirm_top5_map():
             whole_data = pass_whole_data(),
             update_date = update_date(),
             )
-
 
 #设置新增确诊TOP5柱状图数据json数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
