@@ -53,7 +53,10 @@ def click_update_data():
     crawler_run()
     return "更新成功"
 
+<<<<<<< HEAD
 #设置整体疫情数据表网页路由，传入的数据包括本土数据、整体数据、服务器更新数据时间
+=======
+>>>>>>> ebac0e5ad11beb3014182e05826d0cd31a93f390
 @app.route("/covid_information_table")
 def covid_information_table():
     return render_template(
@@ -62,15 +65,25 @@ def covid_information_table():
             whole_data = pass_whole_data(),
             update_date = update_date(),
             )
+<<<<<<< HEAD
 
 
 #设置可视化疫情数据地图数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
+=======
+
+
+# 初始化可视化地图，并将图的数据转化为json，用于html页面调用echarts再次生成
+# 这样做能让也面生成更灵活
+>>>>>>> ebac0e5ad11beb3014182e05826d0cd31a93f390
 @app.route("/visual_China_map_data")
 def visual_map_data():
     map = visual_data_map()
     return map.dump_options_with_quotes()
+<<<<<<< HEAD
 #设置可视化疫情数据地图网页路由
+=======
+>>>>>>> ebac0e5ad11beb3014182e05826d0cd31a93f390
 @app.route("/visual_China_map")
 def visual_map():
     return render_template(
@@ -79,14 +92,23 @@ def visual_map():
             whole_data = pass_whole_data(),
             update_date = update_date(),
             )
+<<<<<<< HEAD
 
 #设置近期整体趋势折线图json数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
+=======
+
+
+# 初始化近期整体趋势折线图，并将图的数据转化为json，用于html页面调用echarts再次生成
+>>>>>>> ebac0e5ad11beb3014182e05826d0cd31a93f390
 @app.route("/current_overall_line_map_data")
 def current_overall_line_map_data_data():
     overall_line_map =  recent_overall_data_line_map()
     return overall_line_map.dump_options_with_quotes()
+<<<<<<< HEAD
 #设置近期整体趋势折线图网页路由
+=======
+>>>>>>> ebac0e5ad11beb3014182e05826d0cd31a93f390
 @app.route("/current_overall_line_map")
 def rcurrent_overall_line_map():
     return render_template(
@@ -95,15 +117,24 @@ def rcurrent_overall_line_map():
             whole_data = pass_whole_data(),
             update_date = update_date(),
             )
+<<<<<<< HEAD
 
 
 #设置近期新增数据折线图json数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
+=======
+
+
+# 初始化近期新增数据折线图，并将图的数据转化为json，用于html页面调用echarts再次生成
+>>>>>>> ebac0e5ad11beb3014182e05826d0cd31a93f390
 @app.route("/current_daily_line_map_data")
 def current_daily_line_map_data():
     daily_line_map = recent_daily_data_line_map()
     return daily_line_map.dump_options_with_quotes()
+<<<<<<< HEAD
 #设置近期新增数据折线图网页路由
+=======
+>>>>>>> ebac0e5ad11beb3014182e05826d0cd31a93f390
 @app.route("/current_daily_line_map")
 def current_daily_line_map():
     return render_template(
@@ -113,13 +144,20 @@ def current_daily_line_map():
             update_date = update_date(),
             )
 
+<<<<<<< HEAD
 #设置累计确诊TOP5柱状图数据json数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
+=======
+# 初始化累计确诊TOP5柱状图，并将图的数据转化为json，用于html页面调用echarts再次生成
+>>>>>>> ebac0e5ad11beb3014182e05826d0cd31a93f390
 @app.route("/total_confirm_top5_data_map_data")
 def total_confirm_top5_map_data():
     total_bar_map = total_confirm_top5_data_map()
     return total_bar_map.dump_options_with_quotes()
+<<<<<<< HEAD
 #设置累计确诊TOP5柱状图网页路由
+=======
+>>>>>>> ebac0e5ad11beb3014182e05826d0cd31a93f390
 @app.route("/total_confirm_top5_data_map")
 def total_confirm_top5_map():
     return render_template(
@@ -129,13 +167,20 @@ def total_confirm_top5_map():
             update_date = update_date(),
             )
 
+<<<<<<< HEAD
 #设置新增确诊TOP5柱状图数据json数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
+=======
+# 初始化新增确诊TOP5柱状图，并将图的数据转化为json，用于html页面调用echarts再次生成
+>>>>>>> ebac0e5ad11beb3014182e05826d0cd31a93f390
 @app.route("/today_confirm_add_top5_data_map_data")
 def today_confirm_add_top5_map_data():
     today_bar_map = today_confirm_add_top5_data_map()
     return today_bar_map.dump_options_with_quotes()
+<<<<<<< HEAD
 #设置新增确诊TOP5柱状图网页路由
+=======
+>>>>>>> ebac0e5ad11beb3014182e05826d0cd31a93f390
 @app.route("/today_confirm_add_top5_data_map")
 def today_confirm_add_top5_map():
     return render_template(
