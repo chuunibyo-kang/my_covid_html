@@ -55,37 +55,88 @@ def click_update_data():
     crawler_run()
     return "更新成功"
 
+@app.route("/covid_information_table")
+def covid_information_table():
+    return render_template(
+            'covid_information_table.html',
+            mainland_data = pass_mainland_data(),
+            whole_data = pass_whole_data(),
+            update_date = update_date(),
+            )
+
 
 # 初始化可视化地图，并将图的数据转化为json，用于html页面调用echarts再次生成
 # 这样做能让也面生成更灵活
-@app.route("/visual_map")
-def visual_map():
+@app.route("/visual_China_map_data")
+def visual_map_data():
     map = visual_data_map()
     return map.dump_options_with_quotes()
+@app.route("/visual_China_map")
+def visual_map():
+    return render_template(
+            'visual_China_map.html',
+            mainland_data = pass_mainland_data(),
+            whole_data = pass_whole_data(),
+            update_date = update_date(),
+            )
+
 
 # 初始化近期整体趋势折线图，并将图的数据转化为json，用于html页面调用echarts再次生成
-@app.route("/current_overall_line_map")
-def recent_overall_line_map():
+@app.route("/current_overall_line_map_data")
+def current_overall_line_map_data_data():
     overall_line_map =  recent_overall_data_line_map()
     return overall_line_map.dump_options_with_quotes()
+@app.route("/current_overall_line_map")
+def rcurrent_overall_line_map():
+    return render_template(
+            'current_overall_line_map.html',
+            mainland_data = pass_mainland_data(),
+            whole_data = pass_whole_data(),
+            update_date = update_date(),
+            )
+
 
 # 初始化近期新增数据折线图，并将图的数据转化为json，用于html页面调用echarts再次生成
-@app.route("/current_daily_line_map")
-def recent_daily_line_map():
+@app.route("/current_daily_line_map_data")
+def current_daily_line_map_data():
     daily_line_map = recent_daily_data_line_map()
     return daily_line_map.dump_options_with_quotes()
+@app.route("/current_daily_line_map")
+def current_daily_line_map():
+    return render_template(
+            'current_daily_line_map.html',
+            mainland_data = pass_mainland_data(),
+            whole_data = pass_whole_data(),
+            update_date = update_date(),
+            )
 
 # 初始化累计确诊TOP5柱状图，并将图的数据转化为json，用于html页面调用echarts再次生成
-@app.route("/total_confirm_top5_data_map")
-def total_confirm_top5_map():
+@app.route("/total_confirm_top5_data_map_data")
+def total_confirm_top5_map_data():
     total_bar_map = total_confirm_top5_data_map()
     return total_bar_map.dump_options_with_quotes()
+@app.route("/total_confirm_top5_data_map")
+def total_confirm_top5_map():
+    return render_template(
+            'total_confirm_top5_data_map.html',
+            mainland_data = pass_mainland_data(),
+            whole_data = pass_whole_data(),
+            update_date = update_date(),
+            )
 
 # 初始化新增确诊TOP5柱状图，并将图的数据转化为json，用于html页面调用echarts再次生成
-@app.route("/today_confirm_add_top5_data_map")
-def today_confirm_add_top5_map():
+@app.route("/today_confirm_add_top5_data_map_data")
+def today_confirm_add_top5_map_data():
     today_bar_map = today_confirm_add_top5_data_map()
     return today_bar_map.dump_options_with_quotes()
+@app.route("/today_confirm_add_top5_data_map")
+def today_confirm_add_top5_map():
+    return render_template(
+            'today_confirm_add_top5_data_map.html',
+            mainland_data = pass_mainland_data(),
+            whole_data = pass_whole_data(),
+            update_date = update_date(),
+            )
 
 if __name__ == "__main__":
     #如果想单独看网页数据，可以用build_charts_html的方法
