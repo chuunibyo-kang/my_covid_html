@@ -370,7 +370,7 @@ def update_risk_area_data(data:list):
         #设定查询语句，用于后续更新
         insert_sql = f'''
         INSERT INTO 
-        risk_area_data(update_date,province,city,county,communities,grade) 
+        risk_area_data(update_date,province,city,county,community,grade) 
         VALUES(%s,%s,%s,%s,%s,%s)
         '''
         #这个语句用于执行query_sql语句，用于后续的判断
