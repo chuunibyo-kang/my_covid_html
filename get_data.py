@@ -57,7 +57,6 @@ def get_mainland_data():
     return query(select_sql)[0]
 
 
-
 #获取每个省的每日新增人数，用于中国地图可视化地图
 def get_province_data():
     select_sql = """
@@ -89,6 +88,7 @@ def get_recent_overall_data():
     """
     return query(select_sql)
 
+
 # 获取最近7天全国每日新增数据
 # 包括更新时间、新增确诊、新增治愈、新增死亡
 def get_recent_daily_data():
@@ -106,8 +106,23 @@ def get_recent_daily_data():
     """
     return query(select_sql)
 
-
 #获取累计确诊最多的5个省份/地区
+'''
+不包括港澳台的数据：
+SELECT province,SUM(confirm) as confirm
+    FROM details_data
+    WHERE province != "香港" 
+          AND province != "澳门" 
+          AND province != "台湾" 
+		  AND city != "境外输入" 
+          AND update_date = (SELECT update_date 
+                            FROM details_data 
+                            ORDER BY update_date DESC 
+                            LIMIT 1)
+  GROUP BY province
+  ORDER BY confirm DESC
+  LIMIT 5
+'''
 def get_total_confirm_top5_data():
     select_sql = """
     SELECT province ,SUM(confirm) AS `confirm_sum` 
@@ -125,6 +140,23 @@ def get_total_confirm_top5_data():
 
 
 
+#获取当天新增确诊最多的5个省份/地区
+'''
+不包括港澳台的数据：
+SELECT province,SUM(confirm_add) as confirm_add
+    FROM details_data
+    WHERE province != "香港" 
+          AND province != "澳门" 
+          AND province != "台湾" 
+		  AND city != "境外输入" 
+          AND update_date = (SELECT update_date 
+                            FROM details_data 
+                            ORDER BY update_date DESC 
+                            LIMIT 1  )
+    GROUP BY province
+    ORDER BY confirm_add DESC
+    LIMIT 5
+'''
 #获取当天新增确诊最多的5个省份/地区
 def get_today_confirm_add_top5_data():
     select_sql = """
