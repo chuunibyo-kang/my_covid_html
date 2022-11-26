@@ -1,13 +1,13 @@
 #爬虫核心
 #提取网页json数据，获得最新的数据后更新数据库
 
+import datetime
+import hashlib
 import pymysql
 import time
 import traceback
 import requests
-
-# 模拟浏览器
-
+import json
 from config import *
 
 # 我们通过在Google chrome的浏览器检查中，找到了腾讯疫情数据接口
@@ -109,6 +109,94 @@ def get_tencent_data():
     #返回history词典、details列表和mainland列表这几个数据集，用于注入数据库中  
     return {'history':history, 'details':details,'mainland':mainland}
 
+#获取卫健委风险地区的爬虫，这个难度较大
+def get_risk_area_data():
+
+    #设置时间戳
+    timestamp = str(int(time.time()))
+
+    #wif签名
+    x_wif_signature_str = timestamp + \
+        'fTN2pfuisxTavbTuYVSsNJHetwq5bJvCQkjjtiLM2dCratiA'+timestamp
+    x_wif_signature = hashlib.sha256(
+        x_wif_signature_str.encode('utf-8')).hexdigest().upper()
+
+    #签名头
+    signatureHeader_str = timestamp + \
+        '23y0ufFl5YxIyGrI8hWRUZmKkvtSjLQA'+'123456789abcdefg'+timestamp
+    signatureHeader = hashlib.sha256(
+        signatureHeader_str.encode('utf-8')).hexdigest().upper()
+
+    url = 'http://bmfw.www.gov.cn/bjww/interface/interfaceJson'
+
+    #请求头的编写
+    headers = {
+        'Accept': "application/json, text/plain, */*",
+        'Content-Type': "application/json;charset=utf-8",
+        'x-wif-nonce': "QkjjtiLM2dCratiA",
+        'x-wif-paasid': "smt-application",
+        'x-wif-signature': x_wif_signature,
+        'x-wif-timestamp': timestamp,
+    }
+
+
+    #定义一个字典，里面放置的内容是payload，没有这个payload无法访问网页，会返回500
+    From_data_dir = {"key":"3C502C97ABDA40D0A60FBEE50FAAD1DA",
+        "appId":"NcApplication",
+        "paasHeader":"zdww",
+        "timestampHeader": timestamp,
+        "nonceHeader":"123456789abcdefg",
+        "signatureHeader":signatureHeader}
+
+    #另外，这个payload得是json，不然也会返回500
+    From_data = json.dumps(From_data_dir )
+
+    #发送请求
+    response = requests.post(url=url, data=From_data, headers=headers)
+
+    #如果访问成功，就返回请求数据，访问失败，就放出状态码
+    if response.status_code != 200:
+        return response.status_code
+    else:
+        #返回的数据是json，replace函数将“20yy-mm-dd xx时”里面的“xx时”换成“:00”方便放入数据库
+        #将json数据转换成字典
+        response_data = json.loads(response.text.replace('\u65f6',':00'))
+        
+    #提取更新时间
+    risk_area_update_date = datetime.datetime.fromisoformat(response_data['data']['end_update_time'])
+    #提取字典中的高风险地区数据
+    high_risk_data = response_data['data']['highlist']
+    #提取字典中的低风险地区
+    low_risk_data = response_data['data']['lowlist']
+
+    #设立一个总体风险地区列表，方便存放
+    overall_risk_list = []
+
+    #循环遍历高、低风险地区数据，将数据拼接在一个列表内
+    #然后再把这个新的列表放入到总体风险地区列表中
+    #格式：[更新时间,省份,市,县/区,社区,风险等级]
+    for area in high_risk_data:
+        province = area['province']
+        city = area['city']
+        county = area['county']
+        for community_name in area['communitys']:
+            community = community_name
+            overall_risk_list.append([risk_area_update_date,province,city,county,community,'高风险'])
+
+    for area in low_risk_data:
+        province = area['province']
+        city = area['city']
+        county = area['county']
+        for community_name in area['communitys']:
+            community = community_name
+            overall_risk_list.append([risk_area_update_date,province,city,county,community,'低风险'])
+
+    #返回风险地区列表
+    return overall_risk_list
+
+
+#######################################分割线#####################################
+
 #连接接数据库
 def db_connect():
     db_connect = pymysql.connect(
@@ -166,7 +254,7 @@ def update_details_data(data:list):
         #连接数据库
         db = db_connect()
         cursor = db.cursor()
-        # 子查询，选中update_time字段，按照id字段的降序排列顺序
+        # 子查询，选中update_date字段，按照update_date字段的降序排列顺序
         # 将子查询返回的时间与我们传入的时间比较，选出update_time里最新的时间
         # 经过测试，如果日期匹配，会返回1，如果日期不匹配，会返回0
         query_sql = '''
@@ -214,7 +302,7 @@ def update_mainland_data(data:list):
         #连接数据库
         db = db_connect()
         cursor = db.cursor()
-        # 子查询，选中update_time字段，按照id字段的降序排列顺序
+        # 子查询，选中update_date字段，按照update_date字段的降序排列顺序
         # 将子查询返回的时间与我们传入的时间比较，选出update_time里最新的时间
         # 经过测试，如果日期匹配，会返回1，如果日期不匹配，会返回0
         query_sql = '''
@@ -257,15 +345,67 @@ def update_mainland_data(data:list):
         if cursor:
             cursor.close()
 
+#更新风险区域数据
+def update_risk_area_data(data:list):
+    try:
+        #连接数据库
+        db = db_connect()
+        cursor = db.cursor()
+        # 子查询，选中update_time字段，按照update_date字段的降序排列顺序
+        # 将子查询返回的时间与我们传入的时间比较，选出update_time里最新的时间
+        # 经过测试，如果日期匹配，会返回1，如果日期不匹配，会返回0
+        query_sql = '''
+        SELECT %s > (
+            SELECT update_date 
+            FROM risk_area_data
+            ORDER BY update_date DESC
+            LIMIT 1
+        )
+        '''
+        #设定查询语句，用于后续更新
+        insert_sql = f'''
+        INSERT INTO 
+        risk_area_data(update_date,province,city,country,communitys,grade) 
+        VALUES(%s,%s,%s,%s,%s,%s)
+        '''
+        #这个语句用于执行query_sql语句，用于后续的判断
+        #data[0][0]取出的是第一个省数据的第一项日期元素，用于与数据库最新的数据对比
+        cursor.execute(query_sql,data[0][0]) 
+        # cursor.fetchone用于返回执行结果
+        # 如果query_sql执行返回的是0，则result结果为None
+        # 如果query_sql执行返回的是1，则result结果为0
+        result = cursor.fetchone()[0]
+        #如果result结果不为0，就会执行第一个if语句，更新最新数据
+        #反之，则提示已是最新的数据
+        if result != 0:
+            print(f'{time.asctime()} 开始更新风险地区数据')
+            for item in data:
+                cursor.execute(insert_sql, item)
+            print(f'{time.asctime()} 完成更新风险地区数据')
+        else:
+            print(f'{time.asctime()} 已是最新的风险地区数据')
+        #事务提交
+        db.commit()
+    except:
+        #如果前面try里面的语句无法执行成功，就报错，方便排查
+        traceback.print_exc()
+    finally:
+        #无论是否出错，这个都会执行
+        #如果cursor仍然存在，就关闭
+        if cursor:
+            cursor.close()
+    
+
 #将抓取数据、更新数据的方法集中在crawler_run方法里，能做到调用一个方法就能抓取并更新数据
 def crawler_run():
     db = db_connect()
-    #获取网页json数据，传入data中
+    #获取网页json数据，传入tencent_data中
     tencent_data = get_tencent_data()
-    #调用更新历史数据和具体数据方法
     update_history_data(tencent_data['history'])
     update_details_data(tencent_data['details'])
     update_mainland_data(tencent_data['mainland'])
+    #
+    risk_area_data = get_risk_area_data()
+    update_risk_area_data(risk_area_data)
     #关闭数据库
     db.close()
-
