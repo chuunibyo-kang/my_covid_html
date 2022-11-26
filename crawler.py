@@ -399,13 +399,15 @@ def update_risk_area_data(data:list):
 #将抓取数据、更新数据的方法集中在crawler_run方法里，能做到调用一个方法就能抓取并更新数据
 def crawler_run():
     db = db_connect()
-    #获取网页json数据，传入tencent_data中
+    #获取腾讯新闻疫情接口数据，传入tencent_data中
     tencent_data = get_tencent_data()
+    #更新国内历史数据、省具体数据、本土整体数据
     update_history_data(tencent_data['history'])
     update_details_data(tencent_data['details'])
     update_mainland_data(tencent_data['mainland'])
-    #
+    #获取卫健委风险地区数据，传入到risk_area_data中
     risk_area_data = get_risk_area_data()
+    #更新国内风险地区数据
     update_risk_area_data(risk_area_data)
     #关闭数据库
     db.close()
