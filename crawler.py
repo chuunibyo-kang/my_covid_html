@@ -79,19 +79,24 @@ def get_tencent_data():
         for city_infos in province_infos['children']:
             #获取地级市名称
             city_name = city_infos['name']
-            #获取城市累计确诊数量
-            detail_confirm = city_infos['total']['confirm']
             #获取城市新增确诊数量
             detail_confirm_add = city_infos['today']['confirm']
+            #获取城市新增无症状数量
+            detail_asymptomatic_add = city_infos['today']['wzz_add']
+            #获取城市累计确诊数量
+            detail_confirm = city_infos['total']['confirm']
             #获取城市累计治愈数量
             detail_heal = city_infos['total']['heal']
             #获取城市累计死亡数量
             detail_dead = city_infos['total']['dead']
+            #经过分析，有的抓取到的无症状新增为NULL，所以要将部分为NULL的化为0
+            if detail_asymptomatic_add == "":
+                detail_asymptomatic_add = 0
     #最后将更新时间、省份名称、地级市名称、具体累计确诊人数、
     #     具体每日新增人数、具体的治愈人数、具体的死亡人数放入到一个列表中
     #再将生成的列表放到details列表中
             details.append([update_date, province_name, city_name, detail_confirm,
-                            detail_confirm_add, detail_heal, detail_dead])
+                            detail_confirm_add,detail_asymptomatic_add, detail_heal, detail_dead])
     
     
     #以下五项本土数据分别是更新时间、现有确诊、今日新增确诊、现有无症状、今日新增无症状
@@ -267,8 +272,8 @@ def update_details_data(data:list):
         #设定插入语句，用于后续更新
         insert_sql = f'''
         INSERT INTO 
-        details_data (update_date,province,city,confirm,confirm_add,heal,dead) 
-        VALUES(%s,%s,%s,%s,%s,%s,%s)'''
+        details_data (update_date,province,city,confirm,confirm_add,asymptomatic_add,heal,dead) 
+        VALUES(%s,%s,%s,%s,%s,%s,%s,%s)'''
         #这个语句用于执行query_sql语句，用于后续的判断
         #data[0][0]取出的是第一个省数据的第一项日期元素，传入%s，用于与数据库最新的日期数据对比
         cursor.execute(query_sql, data[0][0]) 
@@ -365,7 +370,7 @@ def update_risk_area_data(data:list):
         #设定查询语句，用于后续更新
         insert_sql = f'''
         INSERT INTO 
-        risk_area_data(update_date,province,city,country,communitys,grade) 
+        risk_area_data(update_date,province,city,county,communities,grade) 
         VALUES(%s,%s,%s,%s,%s,%s)
         '''
         #这个语句用于执行query_sql语句，用于后续的判断
