@@ -1,176 +1,23 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.88.1">
-    <title>Flask网站展示</title>
-    <!-- 我为数据图表写的css文件 -->
-    <link rel="stylesheet" href="/static/css/main.css">
-    <!-- bootstrap dashboard的核心css -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/css/dashboard.css" rel="stylesheet">
-    
-    <script src="/static/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/js/jquery.js"></script>
-    <script type="text/javascript" src="/static/js/echarts.js"></script>
-    <script type="text/javascript" src="/static/js/china.js"></script>
-</head>
-  <body>
-<!-- 头部是个导航栏，但只保留了一个原本用于放“LOGO”的那一块 -->
-    <header class="navbar navbar-dark sticky-top  p-0 ">
-      <a class="navbar-brand bg-dark col-md-3 col-lg-2 me-0 px-3" href="#">毕业设计展示</a>
-    </header>
+{% extends "templates.html" %}
 
-<!-- 左侧导航栏 -->
-<div class="container-fluid">
-  <div class="row">
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="position-sticky pt-3">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link " aria-current="page" href="/" >
-              首页
-            </a>
-          </li>
+{% block body %}
 
-          <li class="nav-item">
-            <a class="nav-link " href="/covid_information_table">
-              全国总体情况
-            </a>
-          </li>
+  <!-- 生成近两周整体趋势折线图 -->
+  <div id="current_overall_line_map" ></div>
+  <script>
+    $(
+        function () {
+            var chart = echarts.init(document.getElementById('current_overall_line_map'));
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:2333/current_overall_line_map_data",
+                dataType: 'json',
+                success: function (result) {
+                    chart.setOption(result);
+                }
+            });
+        }
+    )
+  </script>
 
-          <li class="nav-item">
-            <a class="nav-link " href="/visual_China_map">
-              疫情可视化地图
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link " href="/current_overall_line_map">
-              近期全国累计数据趋势
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link " href="/current_daily_line_map">
-              近期全国新增数据趋势
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link " href="/total_confirm_top5_data_map">
-              全国累计确诊省份TOP5
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link " href="/today_confirm_add_top5_data_map">
-              全国每日新增确诊TOP5
-            </a>
-          </li>
-          <br>
-
-          <li class="nav-item" onload="startTime()">
-            <span class="nav-link">现在是北京时间</span>
-            <span id="real_time" class="nav-link" ></span>
-          </li>
-          <br>
-
-          <script>
-            // 生成实时时间的函数
-            function get_real_time(){
-                var date = new Date();
-                //获取年份
-                var year = date.getFullYear();  
-                //获取月份(月份有点特殊，需要手动+1才能正常显示)
-                var month = date.getMonth()+1;   
-                 //获取日
-                var day= date.getDate(); 
-                 //获取小时  
-                var hour = date.getHours();  
-                //获取分钟     
-                var minute = date.getMinutes();  
-                //获取秒
-                var second = date.getSeconds();  
-                // 给小于0的月、日、时、分、秒，在字符串前加“0”
-                month=check_time(month);
-                day=check_time(day);
-                minute=check_time(minute);   
-                hour = check_time(hour);
-                second =check_time(second);    
-                //将年、月、日、时、分、秒赋值给date参数
-                date = year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second;  
-                // 将返回值传到这个id为real_time的HTML标签中
-                document.getElementById("real_time").innerHTML=date;
-              }       
-               // 检查返回的数值是否是小于0，如果是就加0
-               function check_time(i)   {   
-              if (i<10){
-                  i="0" + i;
-              }   
-                 return i;
-              }          
-              //先调用获取时间的方法     
-              get_real_time();  
-              //这一句能实现间隔1000毫秒执行一次get_real_time方法，是实现实时显示的核心语句
-              setInterval("get_real_time()",1000);
-    </script>
-          <li class="nav-item">
-            <span class="nav-link">服务器数据最后更新时间</span>
-            <span id="time" class="nav-link">{{ update_date }}</span>
-          </li>
-          <br>
-          <script> 
-            $(function update_data(){ 
-                $("#update_button").click(function () { 
-                  $.getJSON('/click_update_data');
-                    return alert("\n更新成功，请刷新网页 \n\n如果数据没变化，那可能是腾讯没更新数据\n\n也有可能是服务器断网了");
-                  }); 
-            }); 
-            </script> 
-          <li class="nav-item">
-            <button id="update_button" class="btn btn-danger bsa-radius-30" style="margin-left: 15px;">点击更新疫情数据</button>
-          </li>
-          <br>
-
-        </ul>
-      </div>
-    </nav>
-
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" >
-
-      <!-- 主页面 -->
-      <div id="main" >
-        <!-- 生成近两周整体趋势折线图 -->
-        <div id="current_overall_line_map" ></div>
-        <script>
-          $(
-              function () {
-                  var chart = echarts.init(document.getElementById('current_overall_line_map'));
-                  $.ajax({
-                      type: "GET",
-                      url: "http://127.0.0.1:2333/current_overall_line_map_data",
-                      dataType: 'json',
-                      success: function (result) {
-                          chart.setOption(result);
-                      }
-                  });
-              }
-          )
-        </script>
-
-
-      <div class="container">
-        <footer class="py-3 my-4">
-          <p class="text-center text-muted">&copy; Lam ChingKeung</p>
-          <a class="nav-link ICP_number nav-item" href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2022134891号-1</a>
-        </footer>
-      </div>
-    </main>
-  </div>
-</div>
-  </body>
-</html>
+{% endblock %}

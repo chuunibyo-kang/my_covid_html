@@ -1,8 +1,6 @@
 #导入flask框架模块
 from flask import Flask,render_template,request
 
-import requests
-
 from config import PORT
 
 from map_build import *
@@ -148,6 +146,18 @@ def today_confirm_add_top5_map():
             whole_data = pass_whole_data(),
             update_date = update_date(),
             )
+
+@app.route("/risk_area_search", methods=['GET', 'POST'])
+def get_select_tag_data():
+    if request.method == 'POST':
+        risk_province = request.form.get('province')
+        risk_city = request.form.get('city')
+        risk_area_map(risk_province,risk_city)
+    return render_template('risk_area_search.html')
+
+@app.route("/risk_area_search_data")
+def risk_area_search_data():
+    return render_template('risk_table.html')
 
 if __name__ == "__main__":
     #如果想单独看网页数据，可以用build_charts_html的方法

@@ -87,6 +87,15 @@ def today_confirm_add_top5_data_map() -> Bar:
     )
     return bar_map
 
+def risk_area_map(province,city):
+    risk_table = Table()
+    headers = ["省", "市", "区（县）", "社区","风险"]
+    rows = [i for i in get_risk_area_date(province,city)]
+    risk_table = risk_table.add(headers, rows)
+    risk_table.set_global_opts(
+            title_opts=ComponentTitleOpts(title="风险地区查询", subtitle=""))
+    return risk_table.render("templates/risk_table.html")
+
 # 将数据图表生成独立的网页文件，有需要可以使用
 # def build_charts_html():
 #     visual_data_map().render("my_covid_html/templates/visual_data_map.html")

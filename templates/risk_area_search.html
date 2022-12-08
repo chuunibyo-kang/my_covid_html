@@ -1,0 +1,24 @@
+{% extends "templates.html" %}
+
+{% block body %}
+  <!-- 生成近两周整体趋势折线图 -->
+  <div>
+      <form form="#" method="post">
+        <select name='province' id="province" onClick="get_province()">
+              <option selected>--省份--</option>
+        </select>
+        <select name='city' id="city" onclick="get_city()">
+               <option selected>--城市--</option>
+        </select>
+        <button>搜索</button>
+      </form>
+  </div>
+  <div id="risk_area_map"></div>
+  <script>
+    $("button").click(function(){  
+       $("#risk_area_map").load('risk_table.html');
+    });
+  </script>
+  </script>
+
+{% endblock %}
