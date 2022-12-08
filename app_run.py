@@ -147,15 +147,15 @@ def today_confirm_add_top5_map():
             update_date = update_date(),
             )
 
-@app.route("/risk_area_search", methods=['GET', 'POST'])
+@app.route("/risk_area", methods=['GET', 'POST'])
 def get_select_tag_data():
     if request.method == 'POST':
         risk_province = request.form.get('province')
         risk_city = request.form.get('city')
         risk_area_map(risk_province,risk_city)
-    return render_template('risk_area_search.html')
+    return render_template('risk_area.html')
 
-@app.route("/risk_area_search_data")
+@app.route("/risk_area_data")
 def risk_area_search_data():
     return render_template('risk_table.html')
 

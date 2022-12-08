@@ -1,5 +1,7 @@
 {% extends "templates.html" %}
 
+{% block title %}风险地区查询{% endblock %}
+
 {% block body %}
   <!-- 生成近两周整体趋势折线图 -->
   <div>
@@ -12,13 +14,17 @@
         </select>
         <button>搜索</button>
       </form>
+      <script src="static/js/area_select.js"></script>
   </div>
-  <div id="risk_area_map"></div>
+  <iframe id="risk_area_map" style="width: 1000px; height:1000px;">
+  
+  </iframe>
   <script>
-    $("button").click(function(){  
-       $("#risk_area_map").load('risk_table.html');
+    $(function(){
+      $("button").click(function(){
+         $(("iframe").load("risk_table.html"));
+      });
     });
-  </script>
-  </script>
+    </script>
 
 {% endblock %}

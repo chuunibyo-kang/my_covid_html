@@ -183,6 +183,7 @@ def get_data_update_date():
     '''
     return query(select_sql)[0][0]
 
+#获取风险地区数据，获取的数据格式[[省A，市A，区A，社区A，风险等级A],[省B，市B，区B，社区B，风险等级B]。。。。]
 def get_risk_area_date(province,city):
     select_sql=f'''
     SELECT province,city,county,community,grade
@@ -207,5 +208,5 @@ def get_risk_area_date(province,city):
         list.append([province,city,county,community,grade])
     return list
 
-# print(get_risk_area_date("广东省","广州市"))
+        
 
