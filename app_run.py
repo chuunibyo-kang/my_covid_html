@@ -62,7 +62,6 @@ def covid_information_table():
             update_date = update_date(),
             )
 
-
 #设置可视化疫情数据地图数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
 @app.route("/visual_confirm_add_data_map_data")
@@ -88,10 +87,11 @@ def visual_map():
 #设置近期整体趋势折线图json数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
 # 初始化近期整体趋势折线图，并将图的数据转化为json，用于html页面调用echarts再次生成
-@app.route("/current_overall_line_map_data")
-def current_overall_line_map_data_data():
-    overall_line_map =  recent_overall_data_line_map()
-    return overall_line_map.dump_options_with_quotes()
+@app.route("/current_overall_confirm_line_map_data")
+def current_overall_confirm_bar_map_data_data():
+    overall_bar_map =  recent_overall_confirm_data_bar_map()
+    return overall_bar_map.dump_options_with_quotes()
+    
 #设置近期整体趋势折线图网页路由
 @app.route("/current_overall_line_map")
 def rcurrent_overall_line_map():

@@ -57,8 +57,8 @@ def visual_asymptomatic_add_data_map():
 #     )
 #     return line_map
 
-#生成最近7天每日总体趋势折线图
-def recent_overall_data_line_map() -> PictorialBar:
+#生成最近7天每日总体趋势象形柱状图
+def recent_overall_confirm_data_bar_map() -> PictorialBar:
     data = get_recent_overall_data()
     date_list = [i[0].strftime('%Y-%m-%d') for i in data]
     confirm_list= [i[1] for i in data]
@@ -66,7 +66,7 @@ def recent_overall_data_line_map() -> PictorialBar:
     PictorialBar(init_opts=opts.InitOpts(chart_id='current_overall_data_line_map'))
         .add_xaxis(date_list)
         .add_yaxis("累计确诊",confirm_list,
-            label_opts=opts.LabelOpts(is_show=False),
+            label_opts=opts.LabelOpts(is_show=True,position= "right"),
             symbol_size=20,
             symbol_repeat="fixed",
             symbol_offset=[0, 0],
@@ -98,7 +98,6 @@ def recent_mainland_daily_confirm_add_data_line_map() -> Line:
     Line(init_opts=opts.InitOpts(chart_id='current_add_data_line_map'))
         .add_xaxis([i for i in date_list])
         .add_yaxis("本土新增确诊",[i for i in confirm_add_list])
-        
     .set_global_opts(title_opts=opts.TitleOpts(title="近期本土新增确诊趋势（不包含港澳台）"))
     )
     return line_map
@@ -111,8 +110,7 @@ def recent_mainland_daily_asymptomatic_add_data_map() -> Line:
     line_map =(
     Line(init_opts=opts.InitOpts(chart_id='current_add_data_line_map'))
         .add_xaxis([i for i in date_list])
-        .add_yaxis("本土新增无症状",[i for i in confirm_add_list])
-        
+        .add_yaxis("本土新增无症状",[i for i in confirm_add_list])     
     .set_global_opts(title_opts=opts.TitleOpts(title="近期本土新增无症状趋势（不包含港澳台）"))
     )
     return line_map
@@ -171,12 +169,12 @@ def today_confirm_add_top5_mainland_data_map() -> Bar:
 
 #生成风险地区数据
 def risk_area_map():
-    risk_table = Table()
+    risk_table = Table(page_title='风险地区详细表')
     headers = ["风险","省", "市", "区/县/街道", "社区",]
     rows = [i for i in get_risk_area_date()]
     risk_table = risk_table.add(headers, rows)
     risk_table.set_global_opts(
-            title_opts=ComponentTitleOpts(title="", subtitle=""))
+            title_opts=ComponentTitleOpts(title="风险地区数据", subtitle=f"更新日期{get_risk_area_update_date()}"))
     return risk_table.render("templates/risk_table.html")
 
 # 将数据图表生成独立的网页文件，有需要可以使用
