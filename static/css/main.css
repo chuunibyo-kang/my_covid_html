@@ -43,8 +43,11 @@
 
 
 /* 可视化地图设置 */
-#visual_China_map{
-    height: 500px; 
+#visual_China_confirm_add_map,
+#visual_China_asymptomatic_add_map{
+    margin-top: -40px;
+    height: 800px; 
+    width: 100%;
 }
 
 /* 近五日整体趋势图设置  */
@@ -60,17 +63,15 @@
 }
 
 /* 累计确诊TOP5设置 */
-#total_confirm_top5_data_map{
+#total_confirm_top5_data_map,
+#total_confirm_top5_mainland_data_map{
     height: 500px; 
     margin:0 auto;
 }
 
 /* 今日确诊TOP5设置 */
-#today_confirm_add_top5_data_map{
+#today_confirm_add_top5_data_map,
+#today_confirm_add_top5_mainland_data_map{
     height: 500px; 
     margin: 0 auto;
-}
-
-.ICP_number{
-    text-align:center
 }

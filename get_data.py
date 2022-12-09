@@ -57,10 +57,24 @@ def get_mainland_data():
     return query(select_sql)[0]
 
 
-#获取每个省的每日新增人数，用于中国地图可视化地图
-def get_province_data():
+#获取每个省的每日新增确诊人数，用于中国地图可视化地图
+def get_province_confirm_add_data():
     select_sql = """
     SELECT province,SUM(confirm_add) 
+    FROM details_data
+    WHERE update_date=
+        (SELECT update_date
+        FROM details_data 
+        ORDER BY update_date DESC 
+        LIMIT 1)
+    GROUP BY province
+    """
+    return query(select_sql)
+
+##获取每个省的每日新增无症状人数，用于中国地图可视化地图
+def get_province_asymptomatic_add_data():
+    select_sql = """
+    SELECT province,SUM(asymptomatic_add) 
     FROM details_data
     WHERE update_date=
         (SELECT update_date
@@ -106,10 +120,11 @@ def get_recent_daily_data():
     """
     return query(select_sql)
 
-#获取累计确诊最多的5个省份/地区
-'''
-不包括港澳台的数据：
-SELECT province,SUM(confirm) as confirm
+
+#获取累计确诊最多的5个省份/地区(不包含港澳台)
+def get_total_confirm_top5_mainland_data():
+    select_sql = '''
+    SELECT province,SUM(confirm) as confirm
     FROM details_data
     WHERE province != "香港" 
           AND province != "澳门" 
@@ -119,10 +134,12 @@ SELECT province,SUM(confirm) as confirm
                             FROM details_data 
                             ORDER BY update_date DESC 
                             LIMIT 1)
-  GROUP BY province
-  ORDER BY confirm DESC
-  LIMIT 5
-'''
+    GROUP BY province
+    ORDER BY confirm DESC
+    LIMIT 5'''
+    return query(select_sql)
+
+#获取累计确诊最多的5个省份/地区(包含港澳台)
 def get_total_confirm_top5_data():
     select_sql = """
     SELECT province ,SUM(confirm) AS `confirm_sum` 
@@ -138,26 +155,26 @@ def get_total_confirm_top5_data():
     """
     return query(select_sql)
 
+#获取当天新增确诊最多的5个省份/地区（不包含港澳台）
+def get_today_confirm_add_top5_mainland_data():
+    select_sql = '''
+        SELECT province,SUM(confirm_add) as confirm_add
+            FROM details_data
+            WHERE province != "香港" 
+                AND province != "澳门" 
+                AND province != "台湾" 
+                AND city != "境外输入" 
+                AND update_date = (SELECT update_date 
+                                    FROM details_data 
+                                    ORDER BY update_date DESC 
+                                    LIMIT 1  )
+            GROUP BY province
+            ORDER BY confirm_add DESC
+            LIMIT 5
+        '''
+    return query(select_sql)
 
-
-#获取当天新增确诊最多的5个省份/地区
-'''
-不包括港澳台的数据：
-SELECT province,SUM(confirm_add) as confirm_add
-    FROM details_data
-    WHERE province != "香港" 
-          AND province != "澳门" 
-          AND province != "台湾" 
-		  AND city != "境外输入" 
-          AND update_date = (SELECT update_date 
-                            FROM details_data 
-                            ORDER BY update_date DESC 
-                            LIMIT 1  )
-    GROUP BY province
-    ORDER BY confirm_add DESC
-    LIMIT 5
-'''
-#获取当天新增确诊最多的5个省份/地区
+#获取当天新增确诊最多的5个省份/地区（包含港澳台）
 def get_today_confirm_add_top5_data():
     select_sql = """
     SELECT province,SUM(confirm_add) as confirm_add 
@@ -184,13 +201,11 @@ def get_data_update_date():
     return query(select_sql)[0][0]
 
 #获取风险地区数据，获取的数据格式[[省A，市A，区A，社区A，风险等级A],[省B，市B，区B，社区B，风险等级B]。。。。]
-def get_risk_area_date(province,city):
+def get_risk_area_date():
     select_sql=f'''
     SELECT province,city,county,community,grade
     FROM risk_area_data
-    WHERE province = '{province}' 
-          AND city = '{city}' 
-          AND update_date = 
+    WHERE update_date = 
           (SELECT update_date 
           FROM risk_area_data
           ORDER BY update_date DESC
@@ -205,8 +220,82 @@ def get_risk_area_date(province,city):
         county = a[2]
         community = a[3]
         grade = a[4]
-        list.append([province,city,county,community,grade])
+        list.append([grade,province,city,county,community])
     return list
 
-        
+#获取风险地区更新时间
+def get_risk_area_update_date():
+    select_sql=f'''
+    SELECT update_date
+    FROM risk_area_data
+    ORDER BY update_date DESC
+    LIMIT 1
+    '''
+    return query(select_sql)[0][0]
+
+#获取高风险地区数量
+def get_high_risk_area_number():
+    select_sql= f'''
+    SELECT COUNT(*)
+    FROM risk_area_data 
+    WHERE grade = "高风险"
+    AND update_date = (SELECT update_date 
+          FROM risk_area_data
+          ORDER BY update_date DESC
+          LIMIT 1);
+    '''
+    return query(select_sql)[0][0]
+
+#获取低风险地区数量
+def get_low_risk_area_number():
+    select_sql= f'''
+    SELECT COUNT(*)
+    FROM risk_area_data 
+    WHERE grade = "低风险"
+    AND update_date = (SELECT update_date 
+          FROM risk_area_data
+          ORDER BY update_date DESC
+          LIMIT 1);
+    '''
+    return query(select_sql)[0][0]
+
+    
+#获取一个省的词典，用于风险查询
+# def get_province_list():
+#     province_list= []
+    # province_city_dict = {}
+    # tmp_city_list = []
+    # select_sql_1 = '''
+    # SELECT DISTINCT province
+    # FROM risk_area_data
+    # WHERE update_date = 
+    #       (SELECT update_date 
+    #       FROM risk_area_data
+    #       ORDER BY update_date DESC
+    #       LIMIT 1
+    #       )
+    # '''  
+    # for i in query(select_sql_1):
+    #     province_list.append(i[0])
+    # return province_list
+    # for i in query(select_sql_1):
+    #     province_city_dict[i[0]] = []
+    # for j in province_city_dict.keys():
+    #     tmp_city_list.clear()
+    #     select_sql_2 = f'''
+    #         SELECT DISTINCT city
+    #         FROM risk_area_data
+    #         WHERE province = "{j}"
+    #         AND update_date = 
+    #             (SELECT update_date 
+    #             FROM risk_area_data
+    #             ORDER BY update_date DESC
+    #             LIMIT 1
+    #             )
+    #     ''' 
+    #     for k in query(select_sql_2):
+    #         province_city_dict[j].append(k[0])
+    # return province_city_dict
+
+
 

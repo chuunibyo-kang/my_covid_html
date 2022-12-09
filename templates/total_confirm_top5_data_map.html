@@ -19,6 +19,22 @@
               }
           )
         </script>
-        <br><br>
+    <br><br><br>
+<div id="total_confirm_top5_mainland_data_map" ></div>
+<script>
+  $(
+      function () {
+          var chart = echarts.init(document.getElementById('total_confirm_top5_mainland_data_map'));
+          $.ajax({
+              type: "GET",
+              url: "http://127.0.0.1:2333/total_confirm_top5_mainland_data_map_data",
+              dataType: 'json',
+              success: function (result) {
+                  chart.setOption(result);
+              }
+          });
+      }
+  )
+</script>
 
 {% endblock %}

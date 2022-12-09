@@ -64,10 +64,16 @@ def covid_information_table():
 
 #设置可视化疫情数据地图数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
-@app.route("/visual_China_map_data")
-def visual_map_data():
-    map = visual_data_map()
+@app.route("/visual_confirm_add_data_map_data")
+def visual_confirm_add_map_data():
+    map = visual_confirm_add_data_map()
     return map.dump_options_with_quotes()
+
+@app.route("/visual_asymptomatic_add_data_map_data")
+def visual_asymptomatic_add_map_data():
+    map = visual_asymptomatic_add_data_map()
+    return map.dump_options_with_quotes()
+
 #设置可视化疫情数据地图网页路由
 @app.route("/visual_China_map")
 def visual_map():
@@ -119,6 +125,12 @@ def current_daily_line_map():
 def total_confirm_top5_map_data():
     total_bar_map = total_confirm_top5_data_map()
     return total_bar_map.dump_options_with_quotes()
+
+@app.route("/total_confirm_top5_mainland_data_map_data")
+def total_confirm_top5_map_mainland_data():
+    total_bar_map = total_confirm_top5_mainland_data_map()
+    return total_bar_map.dump_options_with_quotes()
+
 #设置累计确诊TOP5柱状图网页路由
 @app.route("/total_confirm_top5_data_map")
 def total_confirm_top5_map():
@@ -137,6 +149,11 @@ def today_confirm_add_top5_map_data():
     today_bar_map = today_confirm_add_top5_data_map()
     return today_bar_map.dump_options_with_quotes()
 
+@app.route("/today_confirm_add_top5_mainland_data_map_data")
+def today_confirm_add_top5_map_mainland_data():
+    today_bar_map = today_confirm_add_top5_mainland_data_map()
+    return today_bar_map.dump_options_with_quotes()
+
 #设置新增确诊TOP5柱状图网页路由
 @app.route("/today_confirm_add_top5_data_map")
 def today_confirm_add_top5_map():
@@ -147,14 +164,24 @@ def today_confirm_add_top5_map():
             update_date = update_date(),
             )
 
+#设置风险地区网页路由
 @app.route("/risk_area", methods=['GET', 'POST'])
 def get_select_tag_data():
-    if request.method == 'POST':
-        risk_province = request.form.get('province')
-        risk_city = request.form.get('city')
-        risk_area_map(risk_province,risk_city)
-    return render_template('risk_area.html')
+    # if request.method == 'POST':
+    #     risk_province = request.form.get('province')
+    #     risk_level = request.form.get('risk_level')
+    #     risk_area_map(risk_province,risk_level)
+    return render_template(
+        'risk_area.html',
+        risk_area_map = risk_area_map(),
+        risk_area_update_date = get_risk_area_update_date(),
+        update_date = update_date(),
+        high_risk_area_number = get_high_risk_area_number(),
+        low_risk_area_number = get_low_risk_area_number()
+    # ,province = get_province_list()
+    )
 
+#设置风险地区详细版网页路由
 @app.route("/risk_area_data")
 def risk_area_search_data():
     return render_template('risk_table.html')

@@ -3,14 +3,14 @@
 {% block title %}疫情可视化地图{% endblock %}
 
 {% block body %}
-<div id="visual_China_map"></div>
+<div id="visual_China_confirm_add_map"></div>
         <script>
           $(
               function () {
-                  var chart = echarts.init(document.getElementById('visual_China_map'), 'white');
+                  var chart = echarts.init(document.getElementById('visual_China_confirm_add_map'), 'white');
                   $.ajax({
                       type: "GET",
-                      url: "http://127.0.0.1:2333/visual_China_map_data",
+                      url: "http://127.0.0.1:2333/visual_confirm_add_data_map_data",
                       dataType: 'json',
                       success: function (result) {
                           chart.setOption(result);
@@ -20,5 +20,21 @@
           )
         </script>
         <br><br><br>
+    <div id="visual_China_asymptomatic_add_map"></div>
+        <script>
+          $(
+              function () {
+                  var chart = echarts.init(document.getElementById('visual_China_asymptomatic_add_map'), 'white');
+                  $.ajax({
+                      type: "GET",
+                      url: "http://127.0.0.1:2333/visual_asymptomatic_add_data_map_data",
+                      dataType: 'json',
+                      success: function (result) {
+                          chart.setOption(result);
+                      }
+                  });
+              }
+          )
+        </script>
 
 {% endblock %}
