@@ -50,14 +50,16 @@
     width: 100%;
 }
 
-/* 近五日整体趋势图设置  */
+/* 近期整体趋势图设置  */
 #current_overall_line_map{
     height: 500px;
     margin: 0 auto;
 }
 
-/* 近五日每日情况图设置 */
-#current_daily_line_map{
+/* 近期每日情况图设置 */
+#current_daily_confirm_add_line_map,
+#current_mainland_daily_confirm_add_line_map,
+#current_mainland_daily_asymptomatic_add_line_map{
     height: 500px; 
     margin:0 auto;
 }

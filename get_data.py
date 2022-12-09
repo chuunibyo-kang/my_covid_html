@@ -89,10 +89,10 @@ def get_province_asymptomatic_add_data():
 # 包括更新时间、累计确诊、累计治愈、累计死亡
 def get_recent_overall_data():
     select_sql = """
-    SELECT result.update_date, result.confirm, result.heal, result.dead
+    SELECT result.update_date, result.confirm
     FROM (
     (
-    SELECT update_date,confirm,heal,dead 
+    SELECT update_date,confirm
     FROM history_data
     ORDER BY update_date DESC 
     LIMIT 7
@@ -101,16 +101,15 @@ def get_recent_overall_data():
     ORDER BY result.update_date 
     """
     return query(select_sql)
-
 
 # 获取最近7天全国每日新增数据
-# 包括更新时间、新增确诊、新增治愈、新增死亡
-def get_recent_daily_data():
+# 包括更新时间、新增确诊
+def get_recent_daily_confirm_add_data():
     select_sql = """
-    SELECT result.update_date, result.confirm_add, result.heal_add, result.dead_add
+    SELECT result.update_date, result.confirm_add
     FROM (
     (
-    SELECT update_date,confirm_add,heal_add,dead_add 
+    SELECT update_date,confirm_add
     FROM history_data
     ORDER BY update_date DESC 
     LIMIT 7
@@ -120,6 +119,41 @@ def get_recent_daily_data():
     """
     return query(select_sql)
 
+# 获取最近7天本土每日新增确诊数据
+def get_recent_mainland_daily_confirm_add_data():
+    select_sql = '''
+    SELECT c.*
+    FROM (
+        SELECT b.date, a.mainland_confirm_add
+        FROM mainland_data AS a
+        JOIN (SELECT DATE_FORMAT(update_date, '%Y-%m-%d' ) AS date, MAX(update_date) AS max_time 
+       	      FROM mainland_data 
+       	      GROUP BY date ) AS b 
+        ON b.max_time = a.update_date
+        ORDER BY a.update_date DESC
+        LIMIT 7
+    ) AS c
+    ORDER BY c.date  
+    '''
+    return query(select_sql)
+
+# 获取最近7天本土每日新增无症状数据
+def get_recent_mainland_daily_asymptomatic_add_data():
+    select_sql = '''
+    SELECT c.*
+    FROM (
+        SELECT b.date, a.mainland_asymptomatic_add
+        FROM mainland_data AS a
+        JOIN (SELECT DATE_FORMAT(update_date, '%Y-%m-%d' ) AS date, MAX(update_date) AS max_time 
+       	      FROM mainland_data 
+       	      GROUP BY date ) AS b 
+        ON b.max_time = a.update_date
+        ORDER BY a.update_date DESC
+        LIMIT 7
+    ) AS c
+    ORDER BY c.date 
+    '''
+    return query(select_sql)
 
 #获取累计确诊最多的5个省份/地区(不包含港澳台)
 def get_total_confirm_top5_mainland_data():
@@ -129,14 +163,14 @@ def get_total_confirm_top5_mainland_data():
     WHERE province != "香港" 
           AND province != "澳门" 
           AND province != "台湾" 
-		  AND city != "境外输入" 
           AND update_date = (SELECT update_date 
                             FROM details_data 
                             ORDER BY update_date DESC 
                             LIMIT 1)
     GROUP BY province
     ORDER BY confirm DESC
-    LIMIT 5'''
+    LIMIT 5
+    '''
     return query(select_sql)
 
 #获取累计确诊最多的5个省份/地区(包含港澳台)
@@ -163,7 +197,6 @@ def get_today_confirm_add_top5_mainland_data():
             WHERE province != "香港" 
                 AND province != "澳门" 
                 AND province != "台湾" 
-                AND city != "境外输入" 
                 AND update_date = (SELECT update_date 
                                     FROM details_data 
                                     ORDER BY update_date DESC 

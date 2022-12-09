@@ -49,6 +49,7 @@ def index():
 @app.route("/click_update_data")
 def click_update_data():
     crawler_run()
+    risk_area_map()
     return "更新成功"
 
 #设置整体疫情数据表网页路由，传入的数据包括本土数据、整体数据、服务器更新数据时间
@@ -104,10 +105,21 @@ def rcurrent_overall_line_map():
 #设置近期新增数据折线图json数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
 # 初始化近期新增数据折线图，并将图的数据转化为json，用于html页面调用echarts再次生成
-@app.route("/current_daily_line_map_data")
-def current_daily_line_map_data():
-    daily_line_map = recent_daily_data_line_map()
+@app.route("/current_daily_confirm_add_data_line_map_data")
+def current_daily_confirm_add_line_map_data():
+    daily_line_map = recent_daily_confirm_add_data_line_map()
     return daily_line_map.dump_options_with_quotes()
+
+@app.route("/current_daily_mainland_confirm_add_data_line_map_data")
+def current_daily_mainland_confirm_add_line_map_data():
+    daily_line_map = recent_mainland_daily_confirm_add_data_line_map()
+    return daily_line_map.dump_options_with_quotes()
+
+@app.route("/current_daily_mainland_asymptomatic_add_data_line_map_data")
+def current_daily_mainland_asymptomatic_add_line_map_data():
+    daily_line_map = recent_mainland_daily_asymptomatic_add_data_map()
+    return daily_line_map.dump_options_with_quotes()
+
 #设置近期新增数据折线图网页路由
 @app.route("/current_daily_line_map")
 def current_daily_line_map():
@@ -173,7 +185,6 @@ def get_select_tag_data():
     #     risk_area_map(risk_province,risk_level)
     return render_template(
         'risk_area.html',
-        risk_area_map = risk_area_map(),
         risk_area_update_date = get_risk_area_update_date(),
         update_date = update_date(),
         high_risk_area_number = get_high_risk_area_number(),
@@ -189,6 +200,7 @@ def risk_area_search_data():
 if __name__ == "__main__":
     #如果想单独看网页数据，可以用build_charts_html的方法
     # build_charts_html()
+    risk_area_map = risk_area_map()
     app.run(
         #这里的IP最好是设置成本机的IP
             host="0.0.0.0"

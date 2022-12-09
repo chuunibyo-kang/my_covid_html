@@ -1,9 +1,9 @@
 #导入pyecharts模块
 from pyecharts.components import Table
 from pyecharts.options import ComponentTitleOpts
-from pyecharts.charts import Map,Bar,Line,Page
+from pyecharts.charts import Map,Bar,Line,PictorialBar
 from pyecharts import options as opts
-from pyecharts.globals import ThemeType
+from pyecharts.globals import SymbolType
 
 #导入写好的查询模块和爬虫模块
 from get_data import *
@@ -44,37 +44,76 @@ def visual_asymptomatic_add_data_map():
     ) 
     return map    
 
-#生成最近5天每日总体趋势折线图
-def recent_overall_data_line_map() -> Line:
-    data = get_recent_overall_data()
+#生成最近7天每日总体趋势折线图
+# def recent_overall_data_line_map() -> Line:
+#     data = get_recent_overall_data()
+#     date_list = [i[0].strftime('%Y-%m-%d') for i in data]
+#     confirm_list= [i[1] for i in data]
+#     line_map =(
+#     Line(init_opts=opts.InitOpts(chart_id='current_overall_data_line_map'))
+#         .add_xaxis([i for i in date_list])
+#         .add_yaxis("累计确诊",[i for i in confirm_list])
+#     .set_global_opts(title_opts=opts.TitleOpts(title="近期全国累计数据趋势（包含港澳台）"))
+#     )
+#     return line_map
 
+#生成最近7天每日总体趋势折线图
+def recent_overall_data_line_map() -> PictorialBar:
+    data = get_recent_overall_data()
     date_list = [i[0].strftime('%Y-%m-%d') for i in data]
     confirm_list= [i[1] for i in data]
-    heal_list = [i[2] for i in data]
+    bar_map =(
+    PictorialBar(init_opts=opts.InitOpts(chart_id='current_overall_data_line_map'))
+        .add_xaxis(date_list)
+        .add_yaxis("累计确诊",confirm_list,
+            label_opts=opts.LabelOpts(is_show=False),
+            symbol_size=20,
+            symbol_repeat="fixed",
+            symbol_offset=[0, 0],
+            is_symbol_clip=True,
+            symbol=SymbolType.ROUND_RECT)
+    .set_global_opts(title_opts=opts.TitleOpts(title="近期全国累计数据趋势（包含港澳台）"))
+    ).reversal_axis()
+    return bar_map
 
-    line_map =(
-    Line(init_opts=opts.InitOpts(chart_id='current_overall_data_line_map'))
-        .add_xaxis([i for i in date_list])
-        .add_yaxis("累计治愈",[i for i in heal_list],color="green")
-        .add_yaxis("累计确诊",[i for i in confirm_list])
-    .set_global_opts(title_opts=opts.TitleOpts(title="近期全国累计数据趋势"))
-    )
-    return line_map
-
-#生成最近5天每日新增趋势折线图
-def recent_daily_data_line_map() -> Line:
-    data = get_recent_daily_data()
+#生成最近7天全国每日新增确诊趋势折线图
+def recent_daily_confirm_add_data_line_map() -> Line:
+    data = get_recent_daily_confirm_add_data()
     date_list = [i[0].strftime('%Y-%m-%d') for i in data]
     confirm_add_list= [i[1] for i in data]
-    heal_add_list = [i[2] for i in data]
-
     line_map =(
     Line(init_opts=opts.InitOpts(chart_id='current_add_data_line_map'))
         .add_xaxis([i for i in date_list])
-        .add_yaxis("新增治愈",[i for i in heal_add_list],color="green")
-        .add_yaxis("新增确诊",[i for i in confirm_add_list])
+        .add_yaxis("全国新增确诊",[i for i in confirm_add_list])
+    .set_global_opts(title_opts=opts.TitleOpts(title="近期全国新增确诊趋势（包含港澳台）"))
+    )
+    return line_map
+
+#生成最近7天本土每日新增确诊趋势折线图
+def recent_mainland_daily_confirm_add_data_line_map() -> Line:
+    data = get_recent_mainland_daily_confirm_add_data()
+    date_list = [i[0] for i in data]
+    confirm_add_list= [i[1] for i in data]
+    line_map =(
+    Line(init_opts=opts.InitOpts(chart_id='current_add_data_line_map'))
+        .add_xaxis([i for i in date_list])
+        .add_yaxis("本土新增确诊",[i for i in confirm_add_list])
         
-    .set_global_opts(title_opts=opts.TitleOpts(title="近期全国新增数据趋势"))
+    .set_global_opts(title_opts=opts.TitleOpts(title="近期本土新增确诊趋势（不包含港澳台）"))
+    )
+    return line_map
+
+#生成最近7天本土每日新增无症状趋势折线图
+def recent_mainland_daily_asymptomatic_add_data_map() -> Line:
+    data = get_recent_mainland_daily_asymptomatic_add_data()
+    date_list = [i[0] for i in data]
+    confirm_add_list= [i[1] for i in data]
+    line_map =(
+    Line(init_opts=opts.InitOpts(chart_id='current_add_data_line_map'))
+        .add_xaxis([i for i in date_list])
+        .add_yaxis("本土新增无症状",[i for i in confirm_add_list])
+        
+    .set_global_opts(title_opts=opts.TitleOpts(title="近期本土新增无症状趋势（不包含港澳台）"))
     )
     return line_map
 
