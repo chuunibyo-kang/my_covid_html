@@ -4,7 +4,7 @@
 
 {% block body %}
 
-  <!-- 生成近两周整体趋势象形柱状图 -->
+  <!-- 生成近期全国累计确诊趋势象形柱状图 -->
   <div id="current_overall_confirm_bar_map" ></div>
   <script>
     $(
@@ -12,7 +12,7 @@
             var chart = echarts.init(document.getElementById('current_overall_confirm_bar_map'));
             $.ajax({
                 type: "GET",
-                url: "http://127.0.0.1:2333/current_overall_confirm_line_map_data",
+                url: "http://127.0.0.1:2333/current_overall_confirm_bar_map_data",
                 dataType: 'json',
                 success: function (result) {
                     chart.setOption(result);
@@ -21,5 +21,24 @@
         }
     )
   </script>
+
+<!-- 生成近期本土累计确诊趋势象形柱状图 -->
+<div id="current_mainland_overall_confirm_bar_map" ></div>
+<script>
+  $(
+      function () {
+          var chart = echarts.init(document.getElementById('current_mainland_overall_confirm_bar_map'));
+          $.ajax({
+              type: "GET",
+              url: "http://127.0.0.1:2333/current_mainland_overall_confirm_line_map_data",
+              dataType: 'json',
+              success: function (result) {
+                  chart.setOption(result);
+              }
+          });
+      }
+  )
+</script>
+
 
 {% endblock %}

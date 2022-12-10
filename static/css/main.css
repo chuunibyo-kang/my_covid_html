@@ -32,13 +32,36 @@
 #covid_information_table table tr th{
     border-collapse: separate;
     padding-left: 20px;
+    font-size: 25px;
 }
 
 /* 疫情整体信息表的表格设置 */
 #covid_information_table table tr td{
-    color: red;
+    color: rgb(255, 85, 68);
     font-size: 30px;
     padding-left: 5px;
+}
+
+/* 疫情整体信息表的表格中，累计确诊人数数字的颜色设置 */
+#covid_information_table table tr:last-child td:first-child,
+#covid_information_table table tr:nth-last-child(2) td:first-child{
+    color: rgb(254, 0, 0);
+}
+
+/* 疫情整体信息表的表格中，累计治愈人数数字的颜色设置 */
+#covid_information_table table tr:last-child td:nth-of-type(2),
+#covid_information_table table tr:nth-last-child(2) td:nth-of-type(2){
+    color: rgb(0, 178, 184);
+}
+
+/* 疫情整体信息表的表格中，累计死亡人数数字的颜色设置 */
+#covid_information_table table tr:last-child td:last-child,
+#covid_information_table table tr:nth-last-child(2) td:last-child{
+    color: rgb(77, 80, 84);
+}
+
+#covid_information_table table tr:last-child td{
+    font-size: 5px;
 }
 
 
@@ -51,7 +74,8 @@
 }
 
 /* 近期整体趋势图设置  */
-#current_overall_confirm_bar_map{
+#current_overall_confirm_bar_map,
+#current_mainland_overall_confirm_bar_map{
     height: 500px;
     margin: 0 auto;
 }
@@ -64,16 +88,12 @@
     margin:0 auto;
 }
 
-/* 累计确诊TOP5设置 */
+/* 省份TOP5设置 */
 #total_confirm_top5_data_map,
-#total_confirm_top5_mainland_data_map{
+#total_confirm_top5_mainland_data_map,
+#today_confirm_add_top5_data_map,
+#today_confirm_add_top5_mainland_data_map,
+#today_asymptomatic_add_top5_mainland_data_map{
     height: 500px; 
     margin:0 auto;
-}
-
-/* 今日确诊TOP5设置 */
-#today_confirm_add_top5_data_map,
-#today_confirm_add_top5_mainland_data_map{
-    height: 500px; 
-    margin: 0 auto;
 }

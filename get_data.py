@@ -33,28 +33,68 @@ def query(sql:str):
     close_database(db, cursor)  
     return result
 
-#获取国内的整体数据
-#包括最新一天的确诊总人数、今日新增、累计治愈、今日治愈、累计死亡，今日死亡
-def get_whole_data() -> tuple:
+#获取国内的疫情新增数据
+#包括最新一天的新增本土确诊数量、新增本土无症状数量、港澳台新增数量
+#用于全国整体情况页
+def get_newly_added_data():
     select_sql = """
-    SELECT confirm, heal, confirm_add
-    FROM history_data 
+    SELECT mainland_confirm_add,mainland_asymptomatic_add,HMK.HMK_confirm_add
+    FROM mainland_data,(
+        SELECT SUM(confirm_add) as HMK_confirm_add
+        FROM details_data
+        WHERE province IN ("香港","澳门","台湾")
+        AND update_date = 
+        (SELECT update_date  
+        FROM details_data 
+        ORDER BY update_date DESC 
+        LIMIT 1)) AS HMK
     ORDER BY update_date DESC 
     LIMIT 1
     """
-    return query(select_sql)[0]
+    return list(query(select_sql)[0])
 
-
-#获取国内的本土数据
-#包括最新一天的本土现有确诊人数、本土新增确诊、本土现有无症状、本土新增无症状
+#获取现有本土数据
+#包括最新一天的本土现有确诊人数、现有无症状数量
+#用于全国整体情况页
 def get_mainland_data():
     select_sql = """
-    SELECT mainland_confirm_now,mainland_confirm_add,mainland_asymptomatic_add
+    SELECT mainland_confirm_now,mainland_asymptomatic_now
     FROM mainland_data 
     ORDER BY update_date DESC 
     LIMIT 1
     """
-    return query(select_sql)[0]
+    return list(query(select_sql)[0])
+
+
+#获取全国累计确诊、累计治愈、累计死亡数量
+def get_overall_data():
+    select_sql = '''
+    SELECT confirm,heal,dead
+    FROM history_data
+    ORDER BY update_date DESC
+    LIMIT 1
+    '''
+    return list(query(select_sql)[0])
+
+def get_overall_gap_data():
+    select_sql = '''
+    SELECT today.confirm - yesterday.confirm , today.heal - yesterday.heal, today.dead - yesterday.dead
+    FROM (SELECT confirm,heal,dead
+          FROM history_data
+          WHERE update_date = (SELECT update_date 
+                               FROM history_data 
+                               ORDER BY update_date DESC 
+                               LIMIT 1))AS today,
+          (SELECT a.confirm,a.heal,a.dead
+            FROM (SELECT * 
+			      FROM history_data 
+			      ORDER BY update_date DESC 
+			      LIMIT 2) AS a 
+                  ORDER BY a.update_date
+                  LIMIT 1) AS yesterday
+    '''
+    return list(query(select_sql)[0])
+
 
 
 #获取每个省的每日新增确诊人数，用于中国地图可视化地图
@@ -85,9 +125,9 @@ def get_province_asymptomatic_add_data():
     """
     return query(select_sql)
 
-# 获取最近7天全国整体趋势数据
-# 包括更新时间、累计确诊、累计治愈、累计死亡
-def get_recent_overall_data():
+# 获取最近7天全国累计确诊数据
+# 包括更新时间、累计确诊
+def get_recent_confirm_data():
     select_sql = """
     SELECT result.update_date, result.confirm
     FROM (
@@ -100,6 +140,22 @@ def get_recent_overall_data():
     )
     ORDER BY result.update_date 
     """
+    return query(select_sql)
+
+#获取近期全国本土累计确诊数据
+def get_mainland_recent_confirm_data():
+    select_sql = '''
+    SELECT SUBSTR(update_date,1,10) as date,SUM(confirm) AS mainland_confirm
+    FROM details_data
+    WHERE update_date IN (SELECT a.max_time
+						  FROM (SELECT DATE_FORMAT(update_date, '%Y-%m-%d' ) AS date, MAX(update_date) AS max_time 
+							    FROM details_data
+								GROUP BY date 
+								ORDER BY max_time DESC
+								LIMIT 7) AS a)
+    AND province NOT IN ("香港","澳门","台湾")
+    GROUP BY update_date
+    '''
     return query(select_sql)
 
 # 获取最近7天全国每日新增数据
@@ -222,6 +278,23 @@ def get_today_confirm_add_top5_data():
     LIMIT 5
     """
     return query(select_sql)
+
+#获取本土省份无症状感染TOP5
+def get_today_mainland_asymptomatic_add_top5_data():
+    select_sql = """
+    SELECT a.province, a.asymptomatic_add
+    FROM (
+        SELECT province,SUM(asymptomatic_add) AS asymptomatic_add
+        FROM details_data
+        WHERE update_date = (SELECT update_date FROM details_data ORDER BY update_date DESC LIMIT 1)
+        AND province != "台湾" 
+        AND province != "香港" 
+        AND province != "澳门"
+        GROUP BY province
+        ORDER BY SUM(asymptomatic_add) DESC) AS a
+        LIMIT 5 
+    """
+    return query(select_sql)    
 
 #取省市详细表的最新更新时间，放到网页的某个地方，显示数据更新的时间
 def get_data_update_date():

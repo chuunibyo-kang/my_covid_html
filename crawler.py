@@ -17,7 +17,7 @@ from config import *
 def get_tencent_data():
     header = {'User-Agent':
                   r'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36 Edg/97.0.1072.62'}
-    target_url = 'https://api.inews.qq.com/newsqa/v1/query/inner/publish/modules/list?modules=chinaDayList,chinaDayAddList,diseaseh5Shelf,provinceCompare'
+    target_url = 'https://api.inews.qq.com/newsqa/v1/query/inner/publish/modules/list?modules=chinaDayList,chinaDayAddList,diseaseh5Shelf'
 
 #返回发出请求后返回的数据并将数据转成json，传入到response参数中
     resopnse = requests.get(target_url, headers=header).json()

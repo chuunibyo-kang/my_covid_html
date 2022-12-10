@@ -1,0 +1,96 @@
+{% extends "templates.html" %}
+
+{% block title %}累计新增TOP5{% endblock %}
+
+{% block body %}
+<!-- 全国省份确诊TOP5省份 -->
+<div id="total_confirm_top5_data_map" ></div>
+        <script>
+          $(
+              function () {
+                  var chart = echarts.init(document.getElementById('total_confirm_top5_data_map'));
+                  $.ajax({
+                      type: "GET",
+                      url: "http://127.0.0.1:2333/total_confirm_top5_data_map_data",
+                      dataType: 'json',
+                      success: function (result) {
+                          chart.setOption(result);
+                      }
+                  });
+              }
+          )
+        </script>
+    <br><br><br>
+
+    <!-- 本土省份确诊TOP5省份 -->
+<div id="total_confirm_top5_mainland_data_map" ></div>
+<script>
+  $(
+      function () {
+          var chart = echarts.init(document.getElementById('total_confirm_top5_mainland_data_map'));
+          $.ajax({
+              type: "GET",
+              url: "http://127.0.0.1:2333/total_confirm_top5_mainland_data_map_data",
+              dataType: 'json',
+              success: function (result) {
+                  chart.setOption(result);
+              }
+          });
+      }
+  )
+</script>
+
+<!-- 今日全国省份新增确诊TOP5 -->
+<div id="today_confirm_add_top5_data_map"></div>
+<script>
+  $(
+    function () {
+        var chart = echarts.init(document.getElementById('today_confirm_add_top5_data_map'));
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:2333/today_confirm_add_top5_data_map_data",
+            dataType: 'json',
+            success: function (result) {
+                chart.setOption(result);
+            }
+        });
+    }
+  )
+  </script>
+  <br><br><br>
+  <!-- 今日本土省份新增确诊TOP5 -->
+  <div id="today_confirm_add_top5_mainland_data_map"></div>
+  <script>
+    $(
+      function () {
+          var chart = echarts.init(document.getElementById('today_confirm_add_top5_mainland_data_map'));
+          $.ajax({
+              type: "GET",
+              url: "http://127.0.0.1:2333/today_confirm_add_top5_mainland_data_map_data",
+              dataType: 'json',
+              success: function (result) {
+                  chart.setOption(result);
+              }
+          });
+      }
+    )
+    </script>
+
+<div id="today_asymptomatic_add_top5_mainland_data_map"></div>
+<script>
+  $(
+    function () {
+        var chart = echarts.init(document.getElementById('today_asymptomatic_add_top5_mainland_data_map'));
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:2333/today_asymptomatic_add_top5_mainland_data_map_data",
+            dataType: 'json',
+            success: function (result) {
+                chart.setOption(result);
+            }
+        });
+    }
+  )
+  </script>
+
+{% endblock %}
