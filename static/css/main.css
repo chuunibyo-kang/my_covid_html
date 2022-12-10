@@ -42,6 +42,14 @@
     padding-left: 5px;
 }
 
+#covid_information_table table tr:last-child td span{
+    color: rgb(164, 164, 164);
+}
+
+#covid_information_table table tr:last-child td span{
+    color: rgb(164, 164, 164);
+}
+
 /* 疫情整体信息表的表格中，累计确诊人数数字的颜色设置 */
 #covid_information_table table tr:last-child td:first-child,
 #covid_information_table table tr:nth-last-child(2) td:first-child{
@@ -60,8 +68,16 @@
     color: rgb(77, 80, 84);
 }
 
+/* 疫情整体信息表中最后一行的数据差异，字体要小 */
 #covid_information_table table tr:last-child td{
     font-size: 5px;
+}
+
+/* 本土省份疫情数据表的大小调整 */
+#mainland_all_province_data_map{
+    margin-left: 30%;
+    height: 500px; 
+    width: 50%;
 }
 
 

@@ -67,6 +67,7 @@ def get_mainland_data():
 
 
 #获取全国累计确诊、累计治愈、累计死亡数量
+#用于全国整体情况页
 def get_overall_data():
     select_sql = '''
     SELECT confirm,heal,dead
@@ -76,6 +77,24 @@ def get_overall_data():
     '''
     return list(query(select_sql)[0])
 
+#获取本土省份新增确诊、新增无症状、累计确诊数量
+#用于全国整体情况页
+def get_mainland_all_province_data():
+    select_sql = '''
+    SELECT province, SUM(confirm_add) as confirm_add, SUM(asymptomatic_add),SUM(confirm)
+    FROM details_data
+    WHERE update_date = (SELECT update_date 
+                         FROM details_data 
+                        ORDER BY update_date DESC 
+                        LIMIT 1)
+    AND province NOT IN ("香港","澳门","台湾")
+    GROUP BY province
+    ORDER BY confirm_add DESC
+    '''
+    return query(select_sql)
+
+#获取今日与昨日累计确诊、累计治愈、累计死亡的差值数据
+#用于总体情况网页
 def get_overall_gap_data():
     select_sql = '''
     SELECT today.confirm - yesterday.confirm , today.heal - yesterday.heal, today.dead - yesterday.dead
@@ -94,8 +113,6 @@ def get_overall_gap_data():
                   LIMIT 1) AS yesterday
     '''
     return list(query(select_sql)[0])
-
-
 
 #获取每个省的每日新增确诊人数，用于中国地图可视化地图
 def get_province_confirm_add_data():

@@ -6,20 +6,19 @@
     <table>
         <tr>
           <th></th>
-          <th><h3>目前全国整体情况</h3></th>
+          <th style="padding-bottom: 20px;"><h3>目前全国整体情况</h3></th>
           <th></th>
         </tr>
-          <tr>
-            <th><br></th>
-          </tr>
+        <tr>
+        </tr>
         <tr>
             <th>本土新增确诊</th>
             <th>本土新增无症状</th>
-            <th>港澳台新增</th>
+            <th>港澳台新增确诊</th>
         </tr>
         <tr>
           {% for i in newly_added_data %}
-            <td>+{{ i }}</td>
+            <td style="padding-bottom: 10px;">+{{ i }}</td>
           {% endfor %}
         </tr>
         <tr>
@@ -29,7 +28,7 @@
       </tr>
       <tr>
         {% for j in mainland_data %}
-            <td>{{ j }}</td>
+            <td style="padding-bottom: 10px;">{{ j }}</td>
         {% endfor %}
     </tr>
         <tr>
@@ -39,16 +38,22 @@
       </tr>
       <tr>
         {% for k in overall_data %}
-            <td>{{ k }}</td>
+            <td>{{ k }} <br> </td>
         {% endfor %}
       </tr>
       <tr>
         {% for l in overall_gap_data %}
-            <td>（相较于昨天+{{ l }}）</td>
+            <td><span>相较于昨天 </span>+{{ l }}</td>
         {% endfor %}
     </tr>
-
     </table>
   </div>
-
+<br><br><br>
+<div>
+  <h5 style="text-align: center;">为了有良好的体验，请勿频繁刷新本页面，并耐心等待数据刷新
+  <h5 style="text-align: center;">若想要有更好的观看体验，点击<a href="/mainland_all_province_data_map" target="_blank">这里</a>跳转到详细表格网页中查看</h5>
+  <h5 style="text-align: center;">请使用网页查找功能寻找</h5>
+  <h5 style="text-align: center;">数据来源：腾讯新闻</h5><br>
+  <iframe id="mainland_all_province_data_map" src="/mainland_all_province_data_map" frameborder="0"></iframe>
+</div>
 {% endblock %}

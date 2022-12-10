@@ -53,7 +53,9 @@ def click_update_data():
     risk_area_map()
     return "更新成功"
 
-#设置整体疫情数据表网页路由，传入的数据包括本土数据、整体数据、服务器更新数据时间
+#设置整体疫情数据表网页路由
+#传入的数据包括疫情新增数据、本土数据、整体累计数据、今日与昨日整体累计差异数据
+#和服务器更新数据时间
 @app.route("/covid_information_table")
 def covid_information_table():
     return render_template(
@@ -64,6 +66,11 @@ def covid_information_table():
             overall_gap_data = pass_overall_gap_data(),
             update_date = update_date(),
             )
+
+#本土省份的疫情数据路由
+@app.route("/mainland_all_province_data_map")
+def mainland_all_province_data_map_data():
+    return render_template('mainland_all_province_data_map.html')
 
 #设置可视化新增确诊地图数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
@@ -209,7 +216,8 @@ def risk_area_search_data():
 if __name__ == "__main__":
     #如果想单独看网页数据，可以用build_charts_html的方法
     # build_charts_html()
-    risk_area_map = risk_area_map()#每次一启动就更新风险地区数据
+    mainland_all_province_data_map()
+    risk_area_map()#每次一启动就更新风险地区数据
     app.run(
         #这里的IP最好是设置成本机的IP
             host="0.0.0.0"

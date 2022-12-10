@@ -9,6 +9,15 @@ from pyecharts.globals import SymbolType
 from get_data import *
 from crawler import *
 
+#生成本土省份的新增确诊、新增无症状、累计确诊个数
+def mainland_all_province_data_map():
+    risk_table = Table(page_title='本土省份疫情数据表')
+    headers = ["省","新增确诊", "新增无症状", "累计确诊"]
+    rows = [i for i in get_mainland_all_province_data()]
+    risk_table = risk_table.add(headers, rows)
+    risk_table.set_global_opts(
+            title_opts=ComponentTitleOpts(title="本土省份疫情数据表", subtitle=f"更新日期：{get_data_update_date()}"))
+    return risk_table.render("templates/mainland_all_province_data_map.html")
 
 #生成每日新增确诊可视化地图
 def visual_confirm_add_data_map():
@@ -200,7 +209,7 @@ def risk_area_map():
     rows = [i for i in get_risk_area_date()]
     risk_table = risk_table.add(headers, rows)
     risk_table.set_global_opts(
-            title_opts=ComponentTitleOpts(title="风险地区数据", subtitle=f"更新日期{get_risk_area_update_date()}"))
+            title_opts=ComponentTitleOpts(title="风险地区数据", subtitle=f"更新日期：{get_risk_area_update_date()}"))
     return risk_table.render("templates/risk_table.html")
 
 # 将数据图表生成独立的网页文件，有需要可以使用
