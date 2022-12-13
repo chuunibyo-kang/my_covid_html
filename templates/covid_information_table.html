@@ -3,11 +3,11 @@
 {% block title %}目前全国整体情况{% endblock %}
 {% block body %}
   <div id="covid_information_table" >
+    <h5 style="text-align: left;">本页数据来源：腾讯新闻</h5>
     <table>
         <tr>
           <th></th>
           <th style="padding-bottom: 20px;"><h3>目前全国整体情况</h3></th>
-          <th></th>
         </tr>
         <tr>
         </tr>
@@ -47,13 +47,14 @@
         {% endfor %}
     </tr>
     </table>
+    <br>
+    <h5 style="text-align: center;">以上多项数据为昨日0-24时的数据</h5>
   </div>
 <br><br><br>
 <div>
-  <h5 style="text-align: center;">为了有良好的体验，请勿频繁刷新本页面，并耐心等待数据刷新
+  <h5 style="text-align: center;">为了有良好的体验，请勿频繁刷新本页面，并耐心等待数据刷新</h5>
   <h5 style="text-align: center;">若想要有更好的观看体验，点击<a href="/mainland_all_province_data_map" target="_blank">这里</a>跳转到详细表格网页中查看</h5>
   <h5 style="text-align: center;">请使用网页查找功能寻找</h5>
-  <h5 style="text-align: center;">数据来源：腾讯新闻</h5><br>
   <iframe id="mainland_all_province_data_map" src="/mainland_all_province_data_map" frameborder="0"></iframe>
 </div>
 {% endblock %}

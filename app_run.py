@@ -51,6 +51,7 @@ def index():
 def click_update_data():
     crawler_run()
     risk_area_map()
+    mainland_all_province_data_map()
     return "更新成功"
 
 #设置整体疫情数据表网页路由
@@ -216,8 +217,6 @@ def risk_area_search_data():
 if __name__ == "__main__":
     #如果想单独看网页数据，可以用build_charts_html的方法
     # build_charts_html()
-    mainland_all_province_data_map()
-    risk_area_map()#每次一启动就更新风险地区数据
     app.run(
         #这里的IP最好是设置成本机的IP
             host="0.0.0.0"
