@@ -212,6 +212,7 @@ def risk_area_map():
             title_opts=ComponentTitleOpts(title="风险地区数据", subtitle=f"更新日期：{get_risk_area_update_date()}"))
     return risk_table.render("templates/risk_table.html")
 
+
 # 将数据图表生成独立的网页文件，有需要可以使用
 # def build_charts_html():
 #     visual_data_map().render("my_covid_html/templates/visual_data_map.html")
