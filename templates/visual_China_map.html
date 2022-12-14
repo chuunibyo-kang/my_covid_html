@@ -21,21 +21,6 @@
           )
         </script>
         <br><br><br>
-    <div id="visual_China_asymptomatic_add_map"></div>
-        <script>
-          $(
-              function () {
-                  var chart = echarts.init(document.getElementById('visual_China_asymptomatic_add_map'), 'white');
-                  $.ajax({
-                      type: "GET",
-                      url: "http://127.0.0.1:2333/visual_asymptomatic_add_data_map_data",
-                      dataType: 'json',
-                      success: function (result) {
-                          chart.setOption(result);
-                      }
-                  });
-              }
-          )
-        </script>
+
 
 {% endblock %}

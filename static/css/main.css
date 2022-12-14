@@ -82,8 +82,7 @@
 
 
 /* 可视化地图设置 */
-#visual_China_confirm_add_map,
-#visual_China_asymptomatic_add_map{
+#visual_China_confirm_add_map{
     margin-top: -40px;
     height: 800px; 
     width: 100%;
@@ -98,8 +97,7 @@
 
 /* 近期每日情况图设置 */
 #current_daily_confirm_add_line_map,
-#current_mainland_daily_confirm_add_line_map,
-#current_mainland_daily_asymptomatic_add_line_map{
+#current_mainland_daily_confirm_add_line_map{
     height: 500px; 
     margin:0 auto;
 }
@@ -108,8 +106,7 @@
 #total_confirm_top5_data_map,
 #total_confirm_top5_mainland_data_map,
 #today_confirm_add_top5_data_map,
-#today_confirm_add_top5_mainland_data_map,
-#today_asymptomatic_add_top5_mainland_data_map{
+#today_confirm_add_top5_mainland_data_map{
     height: 500px; 
     margin:0 auto;
 }

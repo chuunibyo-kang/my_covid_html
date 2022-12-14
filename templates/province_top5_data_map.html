@@ -61,7 +61,6 @@
   </script>
   <br><br><br>
   <!-- 今日本土省份新增确诊TOP5 -->
-  <h5 style="text-align: left;">本页数据来源：腾讯新闻</h5>
   <div id="today_confirm_add_top5_mainland_data_map"></div>
   <script>
     $(
@@ -78,22 +77,5 @@
       }
     )
     </script>
-
-<div id="today_asymptomatic_add_top5_mainland_data_map"></div>
-<script>
-  $(
-    function () {
-        var chart = echarts.init(document.getElementById('today_asymptomatic_add_top5_mainland_data_map'));
-        $.ajax({
-            type: "GET",
-            url: "http://127.0.0.1:2333/today_asymptomatic_add_top5_mainland_data_map_data",
-            dataType: 'json',
-            success: function (result) {
-                chart.setOption(result);
-            }
-        });
-    }
-  )
-  </script>
 
 {% endblock %}

@@ -39,21 +39,5 @@
   )
 </script>
 
-  <!-- 生成近期每日本土新增无症状趋势折线图 -->
-<div id="current_mainland_daily_asymptomatic_add_line_map" ></div>
-  <script>
-    $(
-        function () {
-            var chart = echarts.init(document.getElementById('current_mainland_daily_asymptomatic_add_line_map'));
-            $.ajax({
-                type: "GET",
-                url: "http://127.0.0.1:2333/current_daily_mainland_asymptomatic_add_data_line_map_data",
-                dataType: 'json',
-                success: function (result) {
-                    chart.setOption(result);
-                }
-            });
-        }
-    )
-  </script>
+
 {% endblock %}

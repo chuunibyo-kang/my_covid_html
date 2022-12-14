@@ -16,12 +16,6 @@ def pass_newly_added_data():
     newly_added_data = get_newly_added_data()
     return newly_added_data
 
-#获取本土现有数据，用于全国总体情况网页
-def pass_mainland_data():
-    mainland_data = get_mainland_data()
-    mainland_data.append(get_high_risk_area_number())
-    return mainland_data
-
 #获取全国整体数据，用于全国总体情况网页
 def pass_overall_data():
     overall_data = get_overall_data()
@@ -62,7 +56,6 @@ def covid_information_table():
     return render_template(
             'covid_information_table.html',
             newly_added_data = pass_newly_added_data(),
-            mainland_data = pass_mainland_data(),
             overall_data = pass_overall_data(),
             overall_gap_data = pass_overall_gap_data(),
             update_date = update_date(),
@@ -78,12 +71,6 @@ def mainland_all_province_data_map_data():
 @app.route("/visual_confirm_add_data_map_data")
 def visual_confirm_add_map_data():
     map = visual_confirm_add_data_map()
-    return map.dump_options_with_quotes()
-
-#设置可视化新增无症状地图数据路由
-@app.route("/visual_asymptomatic_add_data_map_data")
-def visual_asymptomatic_add_map_data():
-    map = visual_asymptomatic_add_data_map()
     return map.dump_options_with_quotes()
 
 #设置可视化疫情数据地图网页路由
@@ -129,11 +116,6 @@ def current_daily_mainland_confirm_add_line_map_data():
     daily_line_map = recent_mainland_daily_confirm_add_data_line_map()
     return daily_line_map.dump_options_with_quotes()
 
-@app.route("/current_daily_mainland_asymptomatic_add_data_line_map_data")
-def current_daily_mainland_asymptomatic_add_line_map_data():
-    daily_line_map = recent_mainland_daily_asymptomatic_add_data_map()
-    return daily_line_map.dump_options_with_quotes()
-
 #设置近期新增数据折线图网页路由
 @app.route("/current_daily_line_map")
 def current_daily_line_map():
@@ -176,11 +158,6 @@ def today_confirm_add_top5_map_data():
 @app.route("/today_confirm_add_top5_mainland_data_map_data")
 def today_confirm_add_top5_map_mainland_data():
     today_bar_map = today_confirm_add_top5_mainland_data_map()
-    return today_bar_map.dump_options_with_quotes()
-
-@app.route("/today_asymptomatic_add_top5_mainland_data_map_data")
-def today_asymptomatic_add_top5_mainland_data_map_data():
-    today_bar_map = today_asymptomatic_add_top5_mainland_data_map()
     return today_bar_map.dump_options_with_quotes()
 
 #设置省份数据TOP5柱状图网页路由

@@ -12,25 +12,15 @@
         <tr>
         </tr>
         <tr>
+            <th>现有本土</th>
             <th>本土新增确诊</th>
-            <th>本土新增无症状</th>
             <th>港澳台新增确诊</th>
         </tr>
         <tr>
           {% for i in newly_added_data %}
-            <td style="padding-bottom: 10px;">+{{ i }}</td>
+            <td style="padding-bottom: 10px;">{{ i }}</td>
           {% endfor %}
         </tr>
-        <tr>
-          <th>现有本土</th>
-          <th>现有无症状</th>
-          <th>高风险地区数量</th>
-      </tr>
-      <tr>
-        {% for j in mainland_data %}
-            <td style="padding-bottom: 10px;">{{ j }}</td>
-        {% endfor %}
-    </tr>
         <tr>
           <th>累计确诊</th>
           <th>累计治愈</th>
@@ -48,7 +38,7 @@
     </tr>
     </table>
     <br>
-    <h5 style="text-align: center;">以上多项数据为昨日0-24时的数据</h5>
+    <h5 style="text-align: center;">以上三项累计数据为昨日0-24时的数据</h5>
   </div>
 <br><br><br>
 <div>

@@ -12,7 +12,7 @@ from crawler import *
 #生成本土省份的新增确诊、新增无症状、累计确诊个数
 def mainland_all_province_data_map():
     risk_table = Table(page_title='本土省份疫情数据表')
-    headers = ["省","新增确诊", "新增无症状", "累计确诊"]
+    headers = ["省","新增确诊", "累计确诊"]
     rows = [i for i in get_mainland_all_province_data()]
     risk_table = risk_table.add(headers, rows)
     risk_table.set_global_opts(
@@ -34,24 +34,7 @@ def visual_confirm_add_data_map():
                             max_ = 100),
             legend_opts = opts.LegendOpts(is_show = False))
     ) 
-    return map
-
-#生成每日新增无症状可视化地图
-def visual_asymptomatic_add_data_map():
-    #data获取到的数据是(省份，人数)，直接导入到map方法里可以直接使用，无需处理
-    data = get_province_asymptomatic_add_data()
-    map = (
-    Map(init_opts=opts.InitOpts(chart_id='China_asymptomatic_add_data_visual_map'))
-    .add("新增无症状",data, "china",is_roam=False)
-    .set_global_opts(
-        title_opts=opts.TitleOpts(title=" 全国每日新增无症状可视化地图（无港澳台数据）",pos_left="center", pos_top="10%"),
-        visualmap_opts=opts.VisualMapOpts(
-            is_show = False,
-            range_color = ['#ffffff','#ffe4d9','#ff907c','#ff665a','#fb1b30','#ca0000'],
-                            max_ = 200),
-            legend_opts = opts.LegendOpts(is_show = False))
-    ) 
-    return map    
+    return map 
 
 #生成最近7天每日总体趋势折线图
 # def recent_overall_data_line_map() -> Line:
@@ -124,19 +107,6 @@ def recent_mainland_daily_confirm_add_data_line_map() -> Line:
     )
     return line_map
 
-#生成最近7天本土每日新增无症状趋势折线图
-def recent_mainland_daily_asymptomatic_add_data_map() -> Line:
-    data = get_recent_mainland_daily_asymptomatic_add_data()
-    date_list = [i[0] for i in data]
-    confirm_add_list= [i[1] for i in data]
-    line_map =(
-    Line(init_opts=opts.InitOpts(chart_id='current_add_data_line_map'))
-        .add_xaxis([i for i in date_list])
-        .add_yaxis("本土新增无症状",[i for i in confirm_add_list])     
-    .set_global_opts(title_opts=opts.TitleOpts(title="近期本土新增无症状趋势（不包含港澳台）"))
-    )
-    return line_map
-
 #生成累计确诊top5柱状图
 def total_confirm_top5_data_map() -> Bar:
     data = get_total_confirm_top5_data()
@@ -188,19 +158,6 @@ def today_confirm_add_top5_mainland_data_map() -> Bar:
     .set_global_opts(title_opts=opts.TitleOpts(title="本土今日新增确诊省份TOP5(不包含港澳台)"))
     )
     return bar_map    
-
-#生成新增无症状top5柱状图(不包含港澳台)
-def today_asymptomatic_add_top5_mainland_data_map() -> Bar:
-    data = get_today_mainland_asymptomatic_add_top5_data()
-    province = [i[0] for i in data]
-    confirm_add_number = [i[1] for i in data]
-    bar_map = (
-    Bar(init_opts=opts.InitOpts(chart_id='today_confirm_add_top5_mainland_data_map'))
-    .add_xaxis(province)
-    .add_yaxis("新增无症状人数", confirm_add_number)
-    .set_global_opts(title_opts=opts.TitleOpts(title="全国今日新增无症状省份TOP5(不包含港澳台)"))
-    )
-    return bar_map   
 
 #生成风险地区数据
 def risk_area_map():
