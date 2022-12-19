@@ -17,7 +17,7 @@ from config import *
 def get_tencent_data():
     header = {'User-Agent':
                   r'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36 Edg/97.0.1072.62'}
-    target_url = 'https://api.inews.qq.com/newsqa/v1/query/inner/publish/modules/list?modules=chinaDayList,chinaDayAddList,diseaseh5Shelf'
+    target_url = 'https://api.inews.qq.com/newsqa/v1/query/inner/publish/modules/list?modules=chinaDayListNew,chinaDayAddListNew,diseaseh5Shelf'
 
 #返回发出请求后返回的数据并将数据转成json，传入到response参数中
     resopnse = requests.get(target_url, headers=header).json()
@@ -28,8 +28,8 @@ def get_tencent_data():
 #新建一个空字典，用于存放历史数据
 #预设结构 {日期：{确诊人数：xxxx},{确诊:xxxx},{治愈:xxxx},{死亡:xxxx}}
     history = {}
-#循环遍历json里的ChinaDayList字典数据
-    for i in data['chinaDayList']:
+#循环遍历json里的ChinaDayListNew字典数据
+    for i in data['chinaDayListNew']:
         #将chinaDayList里的y键value和date键value拼接起来
         #比如拼成2022.9.10
         string_data = i['y'] + '.' + i['date']
@@ -49,7 +49,7 @@ def get_tencent_data():
 # {日期：{确诊人数：xxxx},{确诊:xxxx},{治愈:xxxx},{死亡:xxxx},
 #        {新增确诊:xxxx},{新增疑似:xxxx},{新增治愈:xxxx},{新增死亡:xxxx}}
 
-    for i in data['chinaDayAddList']:
+    for i in data['chinaDayAddListNew']:
         #这里的时间转换和前面一个for循环内的一样
         #把YYYY.MM.DD转换成YYYY-MM-DD
         string_data = i['y'] + '.' + i['date']
