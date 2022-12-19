@@ -30,7 +30,7 @@ def get_tencent_data():
     history = {}
 #循环遍历json里的ChinaDayListNew字典数据
     for i in data['chinaDayListNew']:
-        #将chinaDayList里的y键value和date键value拼接起来
+        #将chinaDayListNew里的y键value和date键value拼接起来
         #比如拼成2022.9.10
         string_data = i['y'] + '.' + i['date']
         #strptime方法将时间转成datatime对象，类型是元组
@@ -47,7 +47,7 @@ def get_tencent_data():
 #这里依旧要用到histroty字典
 #对history字典里面的内容进行更新，变成如下：
 # {日期：{确诊人数：xxxx},{确诊:xxxx},{治愈:xxxx},{死亡:xxxx},
-#        {新增确诊:xxxx},{新增疑似:xxxx},{新增治愈:xxxx},{新增死亡:xxxx}}
+#        {新增确诊:xxxx},{新增治愈:xxxx},{新增死亡:xxxx}}
 
     for i in data['chinaDayAddListNew']:
         #这里的时间转换和前面一个for循环内的一样
@@ -59,7 +59,7 @@ def get_tencent_data():
         #如果没有对应日期，就不更新字典了，如果有对应日期，就更新该字典
         if string_data not in history.keys():
             continue
-        #更新history词典，这里的键值名称和上一个chinaDayList的一样，但是对应的值不一样，要注意
+        #更新history词典，这里的键值名称和上一个chinaDayListNew的一样，但是对应的值不一样，要注意
         history[string_data].update({'confirm_add': i['confirm'],
                             'heal_add': i['heal'], 'dead_add': i['dead']})
 
