@@ -45,7 +45,7 @@ def index():
 def click_update_data():
     crawler_run()
     risk_area_map()
-    mainland_all_province_data_map()
+    mainland_all_city_data_map()
     return "更新成功"
 
 #设置整体疫情数据表网页路由
@@ -62,9 +62,9 @@ def covid_information_table():
             )
 
 #本土省份的疫情数据路由
-@app.route("/mainland_all_province_data_map")
-def mainland_all_province_data_map_data():
-    return render_template('mainland_all_province_data_map.html')
+@app.route("/mainland_all_city_data_map")
+def mainland_all_city_data_map_data():
+    return render_template('mainland_all_city_data_map.html')
 
 #设置可视化新增确诊地图数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求

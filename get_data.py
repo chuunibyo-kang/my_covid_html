@@ -65,18 +65,18 @@ def get_overall_data():
     '''
     return list(query(select_sql)[0])
 
-#获取本土省份新增确诊、累计确诊数量
+#获取本土各地级市新增确诊、累计确诊数量
 #用于全国整体情况页
-def get_mainland_all_province_data():
+def get_mainland_all_city_data():
     select_sql = '''
-    SELECT province, SUM(confirm_add) as confirm_add,SUM(confirm)
+    SELECT province,city,confirm_add,confirm,heal,dead
     FROM details_data
     WHERE update_date = (SELECT update_date 
                          FROM details_data 
-                        ORDER BY update_date DESC 
-                        LIMIT 1)
+                         ORDER BY update_date DESC 
+                         LIMIT 1)
     AND province NOT IN ("香港","澳门","台湾")
-    GROUP BY province
+    AND city NOT IN ("涉奥闭环人员","境外输入","外地来京","地区待确认")
     ORDER BY confirm_add DESC
     '''
     return query(select_sql)
