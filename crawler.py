@@ -66,8 +66,11 @@ def get_tencent_data():
     #获取具体的更新日期（精确到秒），作为的省市详细表的更新时间
     update_date = data['diseaseh5Shelf']['lastUpdateTime']
 
-    #新创建一个details列表，用于存放具体的疫情数据
+    #新创建一个details列表，用于存放各地级市的疫情数据
     details = []
+
+    #新建一个province_confirm_now列表，用于存放各省份的现有确诊数据
+    province_confirm_now_data = []
     
     #根据对json数据的分析，省份数据在多个嵌套字典的值
     #省份数据在diseaseh5Shelf值里的areaTree字典值里的第1个里children字典值内
@@ -75,6 +78,8 @@ def get_tencent_data():
     #遍历province_data的数据
     for province_infos in province_data:
         province_name = province_infos['name']#获取省份名
+        province_confirm_now = province_infos['total']['nowConfirm']
+        province_confirm_now_data.append([update_date, province_name,province_confirm_now])
     #获取到省名称后，遍历地级市的信息
         for city_infos in province_infos['children']:
             #获取地级市名称
@@ -106,7 +111,7 @@ def get_tencent_data():
     
     #这是获取腾讯数据函数里的最后一句话，
     #返回history词典、details列表和mainland列表这几个数据集，用于注入数据库中  
-    return {'history':history, 'details':details,'mainland':mainland}
+    return {'history':history, 'details':details,'mainland':mainland,'province_confirm_now':province_confirm_now_data}
 
 #获取卫健委风险地区的爬虫，这个难度较大
 def get_risk_area_data():
@@ -344,6 +349,54 @@ def update_mainland_data(data:list):
         if cursor:
             cursor.close()
 
+def update_province_confirm_now_data(data:list):
+    try:
+        #连接数据库
+        db = db_connect()
+        cursor = db.cursor()
+        # 子查询，选中update_date字段，按照update_date字段的降序排列顺序
+        # 将子查询返回的时间与我们传入的时间比较，选出update_time里最新的时间
+        # 经过测试，如果日期匹配，会返回1，如果日期不匹配，会返回0
+        query_sql = '''
+        SELECT %s > (
+            SELECT update_date 
+            FROM province_confirm_now_data
+            ORDER BY update_date DESC
+            LIMIT 1
+        )
+        '''
+        #设定查询语句，用于后续更新
+        insert_sql = f'''
+        INSERT INTO 
+        province_confirm_now_data (update_date,province,confirm_now) 
+        VALUES(%s,%s,%s)'''
+        #这个语句用于执行query_sql语句，用于后续的判断
+        #data[0][0]取出的是第一个省数据的第一项日期元素，用于与数据库最新的数据对比
+        cursor.execute(query_sql, data[0][0]) 
+        # cursor.fetchone用于返回执行结果
+        # 如果query_sql执行返回的是0，则result结果为None
+        # 如果query_sql执行返回的是1，则result结果为0
+        result = cursor.fetchone()[0]
+        #如果result结果不为0，就会执行第一个if语句，更新最新数据
+        #反之，则提示已是最新的数据
+        if result != 0:
+            print(f'{time.asctime()} 开始更新省份现有确诊数据')
+            for item in data:
+                cursor.execute(insert_sql, item)
+            print(f'{time.asctime()} 完成更新省份现有确诊数据')
+        else:
+            print(f'{time.asctime()} 已是最新的省份现有确诊数据')
+        #事务提交
+        db.commit()
+    except:
+        #如果前面try里面的语句无法执行成功，就报错，方便排查
+        traceback.print_exc()
+    finally:
+        #无论是否出错，这个都会执行
+        #如果cursor仍然存在，就关闭
+        if cursor:
+            cursor.close()
+
 #更新风险区域数据
 def update_risk_area_data(data:list):
     try:
@@ -404,6 +457,7 @@ def crawler_run():
     update_history_data(tencent_data['history'])
     update_details_data(tencent_data['details'])
     update_mainland_data(tencent_data['mainland'])
+    update_province_confirm_now_data(tencent_data['province_confirm_now'])
     #获取卫健委风险地区数据，传入到risk_area_data中
     risk_area_data = get_risk_area_data()
     #更新国内风险地区数据
