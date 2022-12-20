@@ -27,11 +27,27 @@ def visual_confirm_add_data_map():
     Map(init_opts=opts.InitOpts(chart_id='China_confirm_add_data_visual_map'))
     .add("新增确诊",data, "china",is_roam=False)
     .set_global_opts(
-        title_opts=opts.TitleOpts(title=" 全国每日新增确诊可视化地图（无澳门数据）",pos_left="center", pos_top="10%"),
+        title_opts=opts.TitleOpts(title=" 全国 每日新增确诊 可视化地图（无澳门数据）",pos_left="center", pos_top="10%"),
         visualmap_opts=opts.VisualMapOpts(
             is_show = False,
             range_color = ['#ffffff','#ffe4d9','#ff907c','#ff665a','#fb1b30','#ca0000'],
                             max_ = 100),
+            legend_opts = opts.LegendOpts(is_show = False))
+    ) 
+    return map 
+
+def visual_confirm_now_data_map():
+    #data获取到的数据是(省份，人数)，直接导入到map方法里可以直接使用，无需处理
+    data = get_province_confirm_now_data()
+    map = (
+    Map(init_opts=opts.InitOpts(chart_id='China_confirm_now_data_visual_map'))
+    .add("现有确诊",data, "china",is_roam=False)
+    .set_global_opts(
+        title_opts=opts.TitleOpts(title=" 全国 现有确诊 可视化地图（无澳门数据）",pos_left="center", pos_top="10%"),
+        visualmap_opts=opts.VisualMapOpts(
+            is_show = False,
+            range_color = ['#ffffff','#ffe4d9','#ff907c','#ff665a','#fb1b30','#ca0000'],
+                            max_ = 300),
             legend_opts = opts.LegendOpts(is_show = False))
     ) 
     return map 

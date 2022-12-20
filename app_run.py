@@ -73,6 +73,13 @@ def visual_confirm_add_map_data():
     map = visual_confirm_add_data_map()
     return map.dump_options_with_quotes()
 
+#设置可视化新增确诊地图数据路由
+#这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
+@app.route("/visual_confirm_now_data_map_data")
+def visual_confirm_now_map_data():
+    map = visual_confirm_now_data_map()
+    return map.dump_options_with_quotes()
+
 #设置可视化疫情数据地图网页路由
 @app.route("/visual_China_map")
 def visual_map():

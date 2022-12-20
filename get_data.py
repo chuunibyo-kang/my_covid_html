@@ -116,6 +116,18 @@ def get_province_confirm_add_data():
     """
     return query(select_sql)
 
+#获取每个省的现有确诊人数，用于中国地图可视化地图
+def get_province_confirm_now_data():
+    select_sql = """
+    SELECT province,confirm_now
+    FROM province_confirm_now_data
+    WHERE update_date = (SELECT update_date
+						 FROM province_confirm_now_data
+						 ORDER BY update_date
+						 LIMIT 1)
+    """
+    return query(select_sql)
+
 # 获取最近7天全国累计确诊数据
 # 包括更新时间、累计确诊
 def get_recent_confirm_data():

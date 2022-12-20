@@ -82,7 +82,8 @@
 
 
 /* 可视化地图设置 */
-#visual_China_confirm_add_map{
+#visual_China_confirm_add_map,
+#visual_China_confirm_now_map{
     margin-top: -40px;
     height: 800px; 
     width: 100%;
