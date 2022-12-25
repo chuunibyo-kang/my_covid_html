@@ -1,5 +1,5 @@
 #导入flask框架模块
-from flask import Flask,render_template
+from flask import Flask,render_template,request
 
 from config import PORT
 
@@ -26,7 +26,7 @@ def pass_overall_gap_data():
     overall_gap_data = get_overall_gap_data()
     return overall_gap_data
 
-#服务器更新日期
+#服务器数据更新日期
 def update_date():
     date = get_data_update_date()
     return date
@@ -34,10 +34,11 @@ def update_date():
 #设置首页路由，
 @app.route("/")
 def index():
-    return render_template(
-            'index.html',
-            update_date = update_date()
-            )
+    if 'Android' in str(request.user_agent):
+        return render_template("moblie_index.html",update_date = update_date())
+    else:
+        return render_template("index.html",update_date = update_date())
+    
 
 # 用于网页更新疫情数据，HTML内有按钮能调用这个爬虫函数
 # 这个return值随便写的，因为暂时不需要啥返回值
@@ -53,7 +54,15 @@ def click_update_data():
 #和服务器更新数据时间
 @app.route("/covid_information_table")
 def covid_information_table():
-    return render_template(
+    if 'Android' in str(request.user_agent):
+        return render_template(
+            "moblie_covid_information_table.html",
+            newly_added_data = pass_newly_added_data(),
+            overall_data = pass_overall_data(),
+            overall_gap_data = pass_overall_gap_data(),
+            update_date = update_date())
+    else:
+        return render_template(
             'covid_information_table.html',
             newly_added_data = pass_newly_added_data(),
             overall_data = pass_overall_data(),
@@ -83,10 +92,10 @@ def visual_confirm_now_map_data():
 #设置可视化疫情数据地图网页路由
 @app.route("/visual_China_map")
 def visual_map():
-    return render_template(
-            'visual_China_map.html',
-            update_date = update_date(),
-            )
+    if 'Android' in str(request.user_agent):
+        return render_template("moblie_visual_China_map.html",update_date = update_date())
+    else:
+        return render_template("visual_China_map.html",update_date = update_date())
 
 #设置全国/本土近期累计确诊趋势图json数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
@@ -104,7 +113,12 @@ def current_mainland_overall_confirm_bar_map_data():
 #设置近期整体趋势折线图网页路由
 @app.route("/current_overall_confirm_line_map")
 def rcurrent_overall_line_map():
-    return render_template(
+    if 'Android' in str(request.user_agent):
+        return render_template(
+            "moblie_current_overall_line_map.html",
+            update_date = update_date())
+    else:
+        return render_template(
             'current_overall_line_map.html',
             update_date = update_date(),
             )
@@ -126,7 +140,12 @@ def current_daily_mainland_confirm_add_line_map_data():
 #设置近期新增数据折线图网页路由
 @app.route("/current_daily_line_map")
 def current_daily_line_map():
-    return render_template(
+    if 'Android' in str(request.user_agent):
+        return render_template(
+            "moblie_current_daily_line_map.html",
+            update_date = update_date())
+    else:
+        return render_template(
             'current_daily_line_map.html',
             update_date = update_date()
             )
@@ -170,7 +189,11 @@ def today_confirm_add_top5_map_mainland_data():
 #设置省份数据TOP5柱状图网页路由
 @app.route("/province_top5_data_map")
 def confirm_top5_map():
-    return render_template(
+    if 'Android' in str(request.user_agent):
+        return render_template("moblie_province_top5_data_map.html",
+        update_date = update_date())
+    else:
+        return render_template(
             'province_top5_data_map.html',
             update_date = update_date()
             )
@@ -184,7 +207,14 @@ def get_select_tag_data():
     #     risk_province = request.form.get('province')
     #     risk_level = request.form.get('risk_level')
     #     risk_area_map(risk_province,risk_level)
-    return render_template(
+    if 'Android' in str(request.user_agent):
+        return render_template("moblie_risk_area.html",
+        update_date = update_date(),
+        high_risk_area_number = get_high_risk_area_number(),
+        low_risk_area_number = get_low_risk_area_number()
+        )
+    else:
+        return render_template(
         'risk_area.html',
         risk_area_update_date = get_risk_area_update_date(),
         update_date = update_date(),

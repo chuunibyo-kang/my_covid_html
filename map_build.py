@@ -81,7 +81,10 @@ def recent_overall_confirm_data_bar_map() -> PictorialBar:
             symbol_offset=[0, 0],
             is_symbol_clip=True,
             symbol=SymbolType.ROUND_RECT)
-    .set_global_opts(title_opts=opts.TitleOpts(title="近期全国累计数据趋势（包含港澳台）"))
+    .set_global_opts(
+        title_opts = opts.TitleOpts(
+            title="近期全国累计数据趋势（包含港澳台）"),
+        legend_opts = opts.LegendOpts(is_show = False))
     ).reversal_axis()
     return bar_map
 
@@ -94,7 +97,9 @@ def recent_mainland_overall_confirm_data_line_map() -> Line:
     Line(init_opts=opts.InitOpts(chart_id='current_add_data_line_map'))
         .add_xaxis([i for i in date_list])
         .add_yaxis("本土累计确诊",[i for i in confirm_add_list])
-    .set_global_opts(title_opts=opts.TitleOpts(title="近期本土累计数据趋势（不包含港澳台）"))
+    .set_global_opts(
+        title_opts=opts.TitleOpts(title="近期本土累计数据趋势（不包含港澳台）"),
+        legend_opts = opts.LegendOpts(is_show = False))
     )
     return line_map
 
@@ -107,7 +112,8 @@ def recent_daily_confirm_add_data_line_map() -> Line:
     Line(init_opts=opts.InitOpts(chart_id='current_add_data_line_map'))
         .add_xaxis([i for i in date_list])
         .add_yaxis("全国新增确诊",[i for i in confirm_add_list])
-    .set_global_opts(title_opts=opts.TitleOpts(title="近期全国新增确诊趋势（包含港澳台）"))
+    .set_global_opts(title_opts=opts.TitleOpts(title="近期全国新增确诊趋势（包含港澳台）"),
+                legend_opts = opts.LegendOpts(is_show = False))
     )
     return line_map
 
@@ -120,7 +126,8 @@ def recent_mainland_daily_confirm_add_data_line_map() -> Line:
     Line(init_opts=opts.InitOpts(chart_id='current_add_data_line_map'))
         .add_xaxis([i for i in date_list])
         .add_yaxis("本土新增确诊",[i for i in confirm_add_list])
-    .set_global_opts(title_opts=opts.TitleOpts(title="近期本土新增确诊趋势（不包含港澳台）"))
+    .set_global_opts(title_opts=opts.TitleOpts(title="近期本土新增确诊趋势（不包含港澳台）"),
+                legend_opts = opts.LegendOpts(is_show = False))
     )
     return line_map
 
@@ -133,7 +140,9 @@ def total_confirm_top5_data_map() -> Bar:
     Bar(init_opts=opts.InitOpts(chart_id='total_confirm_top5_data_map'))
     .add_xaxis(province)
     .add_yaxis("累计确诊人数",confirm_number)
-    .set_global_opts(title_opts=opts.TitleOpts(title="全国累计确诊省份TOP5（包含港澳台）"))
+    .set_global_opts(title_opts=opts.TitleOpts(
+        title="全国累计确诊省份TOP5（包含港澳台）"),
+        legend_opts = opts.LegendOpts(is_show = False))
     )
     return bar_map
 
@@ -146,7 +155,9 @@ def total_confirm_top5_mainland_data_map() -> Bar:
     Bar(init_opts=opts.InitOpts(chart_id='total_confirm_top5_mainland_data_map'))
     .add_xaxis(province)
     .add_yaxis("累计确诊人数",confirm_number)
-    .set_global_opts(title_opts=opts.TitleOpts(title="本土累计确诊省份TOP5(不包含港澳台)"))
+    .set_global_opts(
+        title_opts=opts.TitleOpts(title="本土累计确诊省份TOP5(不包含港澳台)"),
+        legend_opts = opts.LegendOpts(is_show = False))
     )
     return bar_map   
 
@@ -159,7 +170,9 @@ def today_confirm_add_top5_data_map() -> Bar:
     Bar(init_opts=opts.InitOpts(chart_id='today_confirm_add_top5_data_map'))
     .add_xaxis(province)
     .add_yaxis("新增确诊人数", confirm_add_number)
-    .set_global_opts(title_opts=opts.TitleOpts(title="全国今日新增确诊省份TOP5（包含港澳台）"))
+    .set_global_opts(
+        title_opts=opts.TitleOpts(title="全国今日新增确诊省份TOP5（包含港澳台）"),
+        legend_opts = opts.LegendOpts(is_show = False))
     )
     return bar_map
 
@@ -172,7 +185,9 @@ def today_confirm_add_top5_mainland_data_map() -> Bar:
     Bar(init_opts=opts.InitOpts(chart_id='today_confirm_add_top5_mainland_data_map'))
     .add_xaxis(province)
     .add_yaxis("新增确诊人数", confirm_add_number)
-    .set_global_opts(title_opts=opts.TitleOpts(title="本土今日新增确诊省份TOP5(不包含港澳台)"))
+    .set_global_opts(
+        title_opts=opts.TitleOpts(title="本土今日新增确诊省份TOP5(不包含港澳台)"),
+        legend_opts = opts.LegendOpts(is_show = False))
     )
     return bar_map    
 

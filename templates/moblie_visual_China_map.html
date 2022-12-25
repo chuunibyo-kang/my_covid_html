@@ -1,0 +1,44 @@
+{% extends "moblie_templates.html" %}
+
+{% block title %}疫情可视化地图{% endblock %}
+
+{% block body %}
+<h5 style="text-align: left;">本页数据来源：腾讯新闻</h5>
+<div id="visual_China_confirm_add_map"></div>
+        <script>
+          $(
+              function () {
+                  var chart = echarts.init(document.getElementById('visual_China_confirm_add_map'), 'white');
+                  $.ajax({
+                      type: "GET",
+                      url: "http://192.168.31.105:2333/visual_confirm_add_data_map_data",
+                      dataType: 'json',
+                      success: function (result) {
+                          chart.setOption(result);
+                      }
+                  });
+              }
+          )
+        </script>
+        <br>
+
+<div id="visual_China_confirm_now_map"></div>
+<script>
+    $(
+        function () {
+            var chart = echarts.init(document.getElementById('visual_China_confirm_now_map'), 'white');
+            $.ajax({
+                type: "GET",
+                url: "http://192.168.31.105:2333/visual_confirm_now_data_map_data",
+                dataType: 'json',
+                success: function (result) {
+                    chart.setOption(result);
+                }
+            });
+        }
+    )
+</script>
+  
+
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "moblie_templates.html" %}
+
+{% block title %}风险地区查询{% endblock %}
+
+{% block body %}
+  <!-- 生成近两周整体趋势折线图 -->
+  <!-- <div>
+      <form form="#" method="post">
+        <select  name="province">
+          <option selected>--省份--</option>
+            {% for i in province %}
+                  <option >{{ i }}</option>
+            {% endfor %}
+        </select>
+        <select  name="risk_level">
+          <option selected>--风险程度--</option>
+          <option>高风险</option>
+          <option>低风险</option>
+    </select>
+        <button>搜索</button>
+      </form>
+    -->
+     <!-- <script src="static/js/area_select.js"></script>  -->
+  <!-- </div>
+  <div id="risk_area_map" style="width: 1000px; height:1000px;">
+  这里是风险地区表格
+  </div>
+  <script>
+    $(function(){
+      $("button").click(function(){
+         $(("#risk_area_map").load("risk_table.html"));
+      });
+    });
+    </script> --> 
+    <div>
+      <h5 style="text-align: left;">本页数据来源：国家卫健委</h5><br>
+      <h6>为了有良好的体验，请勿频繁刷新本页面，并耐心等待数据刷新</h6>
+      <h6>若想要有更好的观看体验，点击<a href="/risk_area_data" target="_blank">这里</a>跳转到详细表格网页中查看</h6><br>
+      <h6>请使用网页查找功能寻找，不在下表的地区，属于常态化防控区</h6><br>
+      <h6 style="color: red;">高风险地区数量：{{ high_risk_area_number }}</h6>
+      <h6 style="color: green;">低风险地区数量：{{ low_risk_area_number }}</h6><br>
+      <h6>数据最后更新时间：{{ risk_area_update_date}}</h6>
+      <iframe style="height:450px; width:100%;" src="/risk_area_data" frameborder="0"></iframe>
+    </div>
+
+{% endblock %}

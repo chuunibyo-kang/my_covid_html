@@ -1,0 +1,111 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+/* 首页信息设置 */
+#index_information h3,h4{
+  text-align: center;
+}
+
+#index_information #request_model{
+  text-align: center;
+  margin:0 auto;
+  font-size: 25px;
+}
+
+#index_information #request_model th{
+  padding-right: 20px;
+}
+
+
+/* 疫情整体信息表格整体设置 */
+#covid_information_table table{
+  text-align:center; 
+  margin:0 auto;
+  border:none;
+  font-size: 20px;
+}
+
+/* 疫情整体信息表的表头设置 */
+#covid_information_table table tr th{
+  border-collapse: separate;
+  padding-left: 10px;
+  font-size: 25px;
+}
+
+/* 疫情整体信息表的单元格设置 */
+#covid_information_table table tr td{
+  color: rgb(255, 85, 68);
+  font-size: 30px;
+  padding-left: 5px;
+}
+
+#covid_information_table table tr:last-child td span{
+  color: rgb(164, 164, 164);
+}
+
+#covid_information_table table tr:last-child td span{
+  color: rgb(164, 164, 164);
+}
+
+/* 疫情整体信息表的表格中，累计确诊人数数字的颜色设置 */
+#covid_information_table table tr:last-child td:first-child,
+#covid_information_table table tr:nth-last-child(2) td:first-child{
+  color: rgb(254, 0, 0);
+}
+
+/* 疫情整体信息表的表格中，累计治愈人数数字的颜色设置 */
+#covid_information_table table tr:last-child td:nth-of-type(2),
+#covid_information_table table tr:nth-last-child(2) td:nth-of-type(2){
+  color: rgb(0, 178, 184);
+}
+
+/* 疫情整体信息表的表格中，累计死亡人数数字的颜色设置 */
+#covid_information_table table tr:last-child td:last-child,
+#covid_information_table table tr:nth-last-child(2) td:last-child{
+  color: rgb(77, 80, 84);
+}
+
+/* 疫情整体信息表中最后一行的数据差异，字体要小 */
+#covid_information_table table tr:last-child td{
+  font-size: 15px;
+}
+
+/* 本土省份疫情数据表的大小调整 */
+#mainland_all_province_data_map{
+  height: 500px; 
+  width: 100%;
+}
+
+
+/* 可视化地图设置 */
+#visual_China_confirm_add_map,
+#visual_China_confirm_now_map{
+  margin-left: -50px;
+  height: 800px; 
+  width: 600px;
+}
+
+/* 近期整体趋势图设置  */
+#current_overall_confirm_bar_map,
+#current_mainland_overall_confirm_bar_map{
+  height: 500px;
+  margin: 0 auto;
+}
+
+/* 近期每日情况图设置 */
+#current_daily_confirm_add_line_map,
+#current_mainland_daily_confirm_add_line_map{
+  height: 500px; 
+  margin:0 auto;
+}
+
+/* 省份TOP5设置 */
+#total_confirm_top5_data_map,
+#total_confirm_top5_mainland_data_map,
+#today_confirm_add_top5_data_map,
+#today_confirm_add_top5_mainland_data_map{
+  height: 500px; 
+  margin:0 auto;
+}

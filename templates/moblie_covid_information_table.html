@@ -1,0 +1,50 @@
+{% extends "moblie_templates.html" %}
+
+{% block title %}目前全国整体情况{% endblock %}
+{% block body %}
+  <div id="covid_information_table" >
+    <h5 style="text-align: left;">本页数据来源：腾讯新闻</h5>
+    <table>
+        <tr>
+          <th></th>
+          <th style="padding-bottom: 20px;"><h5>目前全国整体情况</h5></th>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <th>现有本土</th>
+            <th>本土新增</th>
+            <th>港澳台新增</th>
+        </tr>
+        <tr>
+          {% for i in newly_added_data %}
+            <td style="padding-bottom: 10px;">{{ i }}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <th>累计确诊</th>
+          <th>累计治愈</th>
+          <th>累计死亡</th>
+      </tr>
+      <tr>
+        {% for k in overall_data %}
+            <td>{{ k }} <br> </td>
+        {% endfor %}
+      </tr>
+      <tr>
+        {% for l in overall_gap_data %}
+            <td><span>相较于昨天 </span>+{{ l }}</td>
+        {% endfor %}
+    </tr>
+    </table>
+    <br>
+    <h5 style="text-align: center;">以上多项数据为昨日0-24时的数据</h5>
+  </div>
+<br><br><br>
+<div>
+  <h5 style="text-align: center;">为了有良好的体验，请勿频繁刷新本页面，并耐心等待数据刷新</h5>
+  <h5 style="text-align: center;">若想要有更好的观看体验，点击<a href="/mainland_all_city_data_map" target="_blank">这里</a>跳转到详细表格网页中查看</h5>
+  <h5 style="text-align: center;">请使用网页查找功能寻找</h5>
+  <iframe id="mainland_all_province_data_map" src="/mainland_all_city_data_map" frameborder="0"></iframe>
+</div>
+{% endblock %}

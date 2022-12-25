@@ -1,0 +1,49 @@
+{% extends "moblie_templates.html" %}
+
+{% block title %}新冠肺炎疫情数据网站介绍{% endblock %}
+
+{% block body %}
+  <!-- 主页面 -->
+    <div id="index_information">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>你好！朋友。</h2>    
+      </div>
+      <h3>这个网站展示我的学习成果，用于毕业设计</h3>
+      <h3>点击左边的选项就能看到你想要的疫情数据图啦</h3>
+      <h3>技术有限，很多东西实现起来比较简陋</h3>
+      <br>
+      <h4>数据仅供参考</h4>
+      <h4>如果数据出错了，很有可能是我抓取的数据也出错了，请向我反馈</h4>
+      <h4>我的邮箱：chingkeung_lam@foxmail.com</h4>
+      <br>
+      <h4>数据来源：腾讯新闻、国家卫健委</h4>
+      <h4>数据每3个小时更新一次</h4>
+      <br>
+      <table id="request_model" >
+        <tr>
+          <th>核心模块</th>
+          <th>模块版本</th>
+        </tr>
+          <td>pyecharts</td>
+          <td>1.9.1</td>
+        <tr>
+          <td>Flask</td>
+          <td>2.2.2</td>
+        </tr>
+        <tr>
+          <td>PyMySQL</td>
+          <td>1.0.2</td>
+        </tr>
+        <tr>
+          <td>Jinja2</td>
+          <td>3.1.2</td>
+        </tr>
+        <tr>
+          <td>requests</td>
+          <td>2.28.1</td>
+        </tr>
+      </table>
+    </div>
+  <br><br><br>  
+
+{% endblock %}

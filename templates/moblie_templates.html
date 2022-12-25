@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.75">
+  <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/moblie.css">
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+   <script src="static/js/jquery.js"></script>
+   <script src="static/js/echarts.js"></script>
+   <script src="static/js/china.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md bg-dark navbar-dark ">
+  <!-- Brand -->
+  <a class="navbar-brand" href="/">毕业设计展示</a>
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/">首页</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/covid_information_table">全国总体情况</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/visual_China_map">疫情可视化地图</a>
+      </li> 
+      <li class="nav-item">
+        <a class="nav-link" href="/risk_area">风险地区查询</a>
+      </li> 
+      <li class="nav-item">
+        <a class="nav-link" href="/current_overall_confirm_line_map">近期全国累计确诊数据</a>
+      </li> 
+      <li class="nav-item">
+        <a class="nav-link" href="/current_daily_line_map">近期全国新增确诊数据</a>
+      </li> 
+      <li class="nav-item">
+        <a class="nav-link" href="/province_top5_data_map">各省确诊TOP5数据</a>
+      </li>
+      <br>
+      <li class="nav-item" onload="startTime()">
+        <span class="nav-link">现在是北京时间</span>
+        <span id="real_time" class="nav-link" ></span>
+      </li>
+      <br>
+      <script src="static/js/real_time.js"></script>
+      <li class="nav-item">
+        <span class="nav-link">腾讯疫情数据最后更新时间</span>
+        <span id="time" class="nav-link">{{ update_date }}</span>
+      </li>
+      <br>
+      <script> 
+        $(function update_data(){ 
+            $("#update_button").click(function () { 
+              $.getJSON('/click_update_data');
+                return alert("\n更新成功，请刷新网页 \n\n如果数据没变化，那可能是信息源没更新\n\n也有可能是服务器断网了");
+              }); 
+        }); 
+        </script> 
+      <li class="nav-item">
+        <button id="update_button" class="btn btn-danger bsa-radius-30" style="margin-left: 15px;">点击更新疫情数据</button>
+      </li>
+    </ul>
+  </div> 
+</nav>
+
+<br>
+
+<div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+  {% block body %}
+  {% endblock %}
+</div>
+
+</body>
+</html>
