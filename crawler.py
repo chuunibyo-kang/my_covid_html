@@ -196,6 +196,9 @@ def get_risk_area_data():
             overall_risk_list.append([risk_area_update_date,province,city,county,community,'低风险'])
 
     #返回风险地区列表
+    if len(overall_risk_list) == 0:
+        overall_risk_list = [[risk_area_update_date,"所有地区均属于常态化管理","","","",""],[risk_area_update_date,"所有地区均属于常态化管理","","","",""],[risk_area_update_date,"所有地区均属于常态化管理","","","",""]]
+
     return overall_risk_list
 
 
