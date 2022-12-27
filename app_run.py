@@ -38,16 +38,6 @@ def index():
         return render_template("moblie_index.html",update_date = update_date())
     else:
         return render_template("index.html",update_date = update_date())
-    
-
-# 用于网页更新疫情数据，HTML内有按钮能调用这个爬虫函数
-# 这个return值随便写的，因为暂时不需要啥返回值
-@app.route("/click_update_data")
-def click_update_data():
-    crawler_run()
-    risk_area_map()
-    mainland_all_city_data_map()
-    return "更新成功"
 
 #设置整体疫情数据表网页路由
 #传入的数据包括疫情新增数据、本土数据、整体累计数据、今日与昨日整体累计差异数据
