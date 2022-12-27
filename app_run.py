@@ -225,5 +225,4 @@ if __name__ == "__main__":
         #这里的IP最好是设置成本机的IP
             host="0.0.0.0"
             ,port = PORT
-            ,debug = True
             )

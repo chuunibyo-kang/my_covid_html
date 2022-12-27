@@ -1,51 +1,90 @@
-CREATE DATABASE covid;
+/*
+ Navicat Premium Data Transfer
 
-USE covid;
+ Source Server         : 云服务器
+ Source Server Type    : MySQL
+ Source Server Version : 50724 (5.7.24)
+ Source Host           : 1.12.76.245:3306
+ Source Schema         : covid
 
--- 搭建世界疫情历史表，存放累计确诊人数、每日确诊增加人数、
--- 累计疑似人数、每日疑似新增人数、累计治愈人数、治愈新增人数
--- 死亡人数、新增死亡人数
-CREATE TABLE history_data(
-update_date date NOT NULL,
-confirm int(11) DEFAULT NULL,
-confirm_add int(11) DEFAULT NULL,
-heal int(11) DEFAULT NULL,
-heal_add int(11) DEFAULT NULL,
-dead int(11) DEFAULT NULL,
-dead_add int(11) DEFAULT NULL,
-PRIMARY KEY(update_date) USING BTREE
+ Target Server Type    : MySQL
+ Target Server Version : 50724 (5.7.24)
+ File Encoding         : 65001
+
+ Date: 27/12/2022 18:10:02
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for details_data
+-- ----------------------------
+DROP TABLE IF EXISTS `details_data`;
+CREATE TABLE `details_data` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `update_date` datetime NOT NULL,
+  `province` varchar(50) DEFAULT NULL,
+  `city` varchar(50) DEFAULT NULL,
+  `confirm` int(11) DEFAULT NULL,
+  `confirm_add` int(11) DEFAULT NULL,
+  `heal` int(11) DEFAULT NULL,
+  `dead` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=113816 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for history_data
+-- ----------------------------
+DROP TABLE IF EXISTS `history_data`;
+CREATE TABLE `history_data` (
+  `update_date` date NOT NULL,
+  `confirm` int(11) DEFAULT NULL,
+  `confirm_add` int(11) DEFAULT NULL,
+  `heal` int(11) DEFAULT NULL,
+  `heal_add` int(11) DEFAULT NULL,
+  `dead` int(11) DEFAULT NULL,
+  `dead_add` int(11) DEFAULT NULL,
+  PRIMARY KEY (`update_date`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 这是各省疫情表
--- 存放更新时间、省和各地级市的累计确诊人数、新增确诊人数
--- 累计治愈人数、累计死亡人数
-CREATE TABLE details_data (
-id int(11) NOT NULL AUTO_INCREMENT,
-update_date datetime NOT NULL,
-province VARCHAR(50) DEFAULT NULL,
-city VARCHAR(50) DEFAULT NULL,
-confirm int(11) DEFAULT NULL,
-confirm_add int(11) DEFAULT NULL,
-heal int(11) DEFAULT NULL,
-dead int(11) DEFAULT NULL,
-PRIMARY KEY(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- ----------------------------
+-- Table structure for mainland_data
+-- ----------------------------
+DROP TABLE IF EXISTS `mainland_data`;
+CREATE TABLE `mainland_data` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `update_date` datetime NOT NULL,
+  `mainland_confirm_now` int(11) DEFAULT NULL,
+  `mainland_confirm_add` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=213 DEFAULT CHARSET=utf8mb4;
 
--- 这是本土相关的表
--- 存放更新时间、现有确诊、今日新增确诊、现有无症状、今日新增无症状
-CREATE TABLE mainland_data(
-id int(11) NOT NULL AUTO_INCREMENT,
-update_date datetime NOT NULL,
-mainland_confirm_now int(11) DEFAULT NULL,
-mainland_confirm_add int(11) DEFAULT NULL,
-mainland_asymptomatic_now int(11) DEFAULT NULL,
-mainland_asymptomatic_add int(11) DEFAULT NULL,
-PRIMARY KEY(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- ----------------------------
+-- Table structure for province_confirm_now_data
+-- ----------------------------
+DROP TABLE IF EXISTS `province_confirm_now_data`;
+CREATE TABLE `province_confirm_now_data` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `update_date` datetime NOT NULL,
+  `province` varchar(50) DEFAULT NULL,
+  `confirm_now` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=112864 DEFAULT CHARSET=utf8mb4;
 
+-- ----------------------------
+-- Table structure for risk_area_data
+-- ----------------------------
+DROP TABLE IF EXISTS `risk_area_data`;
+CREATE TABLE `risk_area_data` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `update_date` datetime DEFAULT NULL,
+  `province` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `county` varchar(255) DEFAULT NULL,
+  `community` varchar(1024) DEFAULT NULL,
+  `grade` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1954919 DEFAULT CHARSET=utf8;
 
-
-
-       
-
-
+SET FOREIGN_KEY_CHECKS = 1;
