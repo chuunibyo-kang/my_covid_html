@@ -9,6 +9,7 @@ import traceback
 import requests
 import json
 from config import *
+from bs4 import BeautifulSoup
 
 # 我们通过在Google chrome的浏览器检查中，找到了腾讯疫情数据接口
 # 而modules后跟上的是对应数据的json名
@@ -200,7 +201,6 @@ def get_risk_area_data():
         overall_risk_list = [[risk_area_update_date,"所有地区均属于常态化管理","","","",""],[risk_area_update_date,"所有地区均属于常态化管理","","","",""],[risk_area_update_date,"所有地区均属于常态化管理","","","",""]]
 
     return overall_risk_list
-
 
 #######################################分割线#####################################
 
@@ -449,18 +449,18 @@ def update_risk_area_data(data:list):
         #如果cursor仍然存在，就关闭
         if cursor:
             cursor.close()
-    
+
 
 #将抓取数据、更新数据的方法集中在crawler_run方法里，能做到调用一个方法就能抓取并更新数据
 def crawler_run():
     db = db_connect()
     #获取腾讯新闻疫情接口数据，传入tencent_data中
-    tencent_data = get_tencent_data()
+    # tencent_data = get_tencent_data()
     #更新国内历史数据、省具体数据、本土整体数据
-    update_history_data(tencent_data['history'])
-    update_details_data(tencent_data['details'])
-    update_mainland_data(tencent_data['mainland'])
-    update_province_confirm_now_data(tencent_data['province_confirm_now'])
+    # update_history_data(tencent_data['history'])
+    # update_details_data(tencent_data['details'])
+    # update_mainland_data(tencent_data['mainland'])
+    # update_province_confirm_now_data(tencent_data['province_confirm_now'])
     #获取卫健委风险地区数据，传入到risk_area_data中
     risk_area_data = get_risk_area_data()
     #更新国内风险地区数据
