@@ -11,33 +11,14 @@ from crawler import *
 
 app = Flask(__name__, static_folder = "static",template_folder = "templates")
 
-#获取疫情新增数据，用于全国总体情况网页
-def pass_newly_added_data():
-    newly_added_data = get_newly_added_data()
-    return newly_added_data
-
-#获取全国整体数据，用于全国总体情况网页
-def pass_overall_data():
-    overall_data = get_overall_data()
-    return overall_data
-
-#获取昨日与今日全国整体累计数据差值，用于全国总体情况网页
-def pass_overall_gap_data():
-    overall_gap_data = get_overall_gap_data()
-    return overall_gap_data
-
-#服务器数据更新日期
-def update_date():
-    date = get_data_update_date()
-    return date
 
 #设置首页路由，
 @app.route("/")
 def index():
     if 'Android' in str(request.user_agent):
-        return render_template("moblie_index.html",update_date = update_date())
+        return render_template("moblie_index.html",update_date = get_data_update_date())
     else:
-        return render_template("index.html",update_date = update_date())
+        return render_template("index.html",update_date = get_data_update_date())
 
 #设置整体疫情数据表网页路由
 #传入的数据包括疫情新增数据、本土数据、整体累计数据、今日与昨日整体累计差异数据
@@ -47,17 +28,17 @@ def covid_information_table():
     if 'Android' in str(request.user_agent):
         return render_template(
             "moblie_covid_information_table.html",
-            newly_added_data = pass_newly_added_data(),
-            overall_data = pass_overall_data(),
-            overall_gap_data = pass_overall_gap_data(),
-            update_date = update_date())
+            newly_added_data = get_newly_added_data(),
+            overall_data = get_overall_data(),
+            overall_gap_data = get_overall_gap_data(),
+            update_date = get_data_update_date())
     else:
         return render_template(
             'covid_information_table.html',
-            newly_added_data = pass_newly_added_data(),
-            overall_data = pass_overall_data(),
-            overall_gap_data = pass_overall_gap_data(),
-            update_date = update_date(),
+            newly_added_data = get_newly_added_data(),
+            overall_data = get_overall_data(),
+            overall_gap_data = get_overall_gap_data(),
+            update_date = get_data_update_date(),
             )
 
 #本土省份的疫情数据路由
@@ -83,9 +64,9 @@ def visual_confirm_now_map_data():
 @app.route("/visual_China_map")
 def visual_map():
     if 'Android' in str(request.user_agent):
-        return render_template("moblie_visual_China_map.html",update_date = update_date())
+        return render_template("moblie_visual_China_map.html",update_date = get_data_update_date())
     else:
-        return render_template("visual_China_map.html",update_date = update_date())
+        return render_template("visual_China_map.html",update_date = get_data_update_date())
 
 #设置全国/本土近期累计确诊趋势图json数据路由
 #这个路由传输的是数据，用于网页内的ajax生成图表数据的请求
@@ -106,11 +87,11 @@ def rcurrent_overall_line_map():
     if 'Android' in str(request.user_agent):
         return render_template(
             "moblie_current_overall_line_map.html",
-            update_date = update_date())
+            update_date = get_data_update_date())
     else:
         return render_template(
             'current_overall_line_map.html',
-            update_date = update_date(),
+            update_date = get_data_update_date(),
             )
 
 #设置近期新增数据折线图json数据路由
@@ -133,11 +114,11 @@ def current_daily_line_map():
     if 'Android' in str(request.user_agent):
         return render_template(
             "moblie_current_daily_line_map.html",
-            update_date = update_date())
+            update_date = get_data_update_date())
     else:
         return render_template(
             'current_daily_line_map.html',
-            update_date = update_date()
+            update_date = get_data_update_date()
             )
 
 #设置累计确诊TOP5柱状图数据json数据路由
@@ -160,7 +141,7 @@ def total_confirm_top5_map_mainland_data():
 #             'total_confirm_top5_data_map.html',
 #             mainland_data = pass_mainland_data(),
 #             whole_data = pass_whole_data(),
-#             update_date = update_date(),
+#             update_date = get_data_update_date(),
 #             )
 
 #设置新增确诊TOP5柱状图数据json数据路由
@@ -181,11 +162,11 @@ def today_confirm_add_top5_map_mainland_data():
 def confirm_top5_map():
     if 'Android' in str(request.user_agent):
         return render_template("moblie_province_top5_data_map.html",
-        update_date = update_date())
+        update_date = get_data_update_date())
     else:
         return render_template(
             'province_top5_data_map.html',
-            update_date = update_date()
+            update_date = get_data_update_date()
             )
 
 #设置风险地区网页路由
@@ -199,7 +180,7 @@ def get_select_tag_data():
     #     risk_area_map(risk_province,risk_level)
     if 'Android' in str(request.user_agent):
         return render_template("moblie_risk_area.html",
-        update_date = update_date(),
+        update_date = get_data_update_date(),
         high_risk_area_number = get_high_risk_area_number(),
         low_risk_area_number = get_low_risk_area_number()
         )
@@ -207,7 +188,7 @@ def get_select_tag_data():
         return render_template(
         'risk_area.html',
         risk_area_update_date = get_risk_area_update_date(),
-        update_date = update_date(),
+        update_date = get_data_update_date(),
         high_risk_area_number = get_high_risk_area_number(),
         low_risk_area_number = get_low_risk_area_number()
     # ,province = get_province_list()

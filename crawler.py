@@ -9,12 +9,10 @@ import traceback
 import requests
 import json
 from config import *
-from bs4 import BeautifulSoup
 
 # 我们通过在Google chrome的浏览器检查中，找到了腾讯疫情数据接口
 # 而modules后跟上的是对应数据的json名
 # 这里跟上三个modules，能在一个页面力显示三份json数据
-# 这三个json数据分别是中国疫情总情况、中国每日疫情总情况、各省具体疫情情况
 def get_tencent_data():
     header = {'User-Agent':
                   r'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36 Edg/97.0.1072.62'}
@@ -93,7 +91,6 @@ def get_tencent_data():
             detail_heal = city_infos['total']['heal']
             #获取城市累计死亡数量
             detail_dead = city_infos['total']['dead']
-            #经过分析，有的抓取到的无症状新增为NULL，所以要将部分为NULL的化为0
     #最后将更新时间、省份名称、地级市名称、具体累计确诊人数、
     #     具体每日新增人数、具体的治愈人数、具体的死亡人数放入到一个列表中
     #再将生成的列表放到details列表中

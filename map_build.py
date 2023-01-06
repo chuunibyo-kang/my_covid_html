@@ -7,7 +7,6 @@ from pyecharts.globals import SymbolType
 
 #导入写好的查询模块和爬虫模块
 from get_data import *
-from crawler import *
 
 #生成本土省份地级市的新增确诊、累计确诊、累计治愈、累计死亡
 def mainland_all_city_data_map():
