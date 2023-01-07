@@ -33,7 +33,7 @@ def visual_confirm_add_data_map():
                             max_ = 100),
             legend_opts = opts.LegendOpts(is_show = False))
     ) 
-    return map 
+    return map
 
 #生成现确诊可视化地图
 def visual_confirm_now_data_map():
