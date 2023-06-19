@@ -452,12 +452,12 @@ def update_risk_area_data(data:list):
 def crawler_run():
     db = db_connect()
     #获取腾讯新闻疫情接口数据，传入tencent_data中
-    # tencent_data = get_tencent_data()
+    tencent_data = get_tencent_data()
     #更新国内历史数据、省具体数据、本土整体数据
-    # update_history_data(tencent_data['history'])
-    # update_details_data(tencent_data['details'])
-    # update_mainland_data(tencent_data['mainland'])
-    # update_province_confirm_now_data(tencent_data['province_confirm_now'])
+    update_history_data(tencent_data['history'])
+    update_details_data(tencent_data['details'])
+    update_mainland_data(tencent_data['mainland'])
+    update_province_confirm_now_data(tencent_data['province_confirm_now'])
     #获取卫健委风险地区数据，传入到risk_area_data中
     risk_area_data = get_risk_area_data()
     #更新国内风险地区数据

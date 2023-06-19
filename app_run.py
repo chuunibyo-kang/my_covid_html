@@ -31,7 +31,9 @@ def covid_information_table():
             newly_added_data = get_newly_added_data(),
             overall_data = get_overall_data(),
             overall_gap_data = get_overall_gap_data(),
-            update_date = get_data_update_date())
+            update_date = get_data_update_date(),
+            update_map = mainland_all_city_data_map()
+            )
     else:
         return render_template(
             'covid_information_table.html',
@@ -39,6 +41,7 @@ def covid_information_table():
             overall_data = get_overall_data(),
             overall_gap_data = get_overall_gap_data(),
             update_date = get_data_update_date(),
+            update_map = mainland_all_city_data_map()
             )
 
 #本土省份的疫情数据路由
@@ -182,7 +185,8 @@ def get_select_tag_data():
         return render_template("moblie_risk_area.html",
         update_date = get_data_update_date(),
         high_risk_area_number = get_high_risk_area_number(),
-        low_risk_area_number = get_low_risk_area_number()
+        low_risk_area_number = get_low_risk_area_number(),
+        update_map = risk_area_map()
         )
     else:
         return render_template(
@@ -190,7 +194,8 @@ def get_select_tag_data():
         risk_area_update_date = get_risk_area_update_date(),
         update_date = get_data_update_date(),
         high_risk_area_number = get_high_risk_area_number(),
-        low_risk_area_number = get_low_risk_area_number()
+        low_risk_area_number = get_low_risk_area_number(),
+        update_map = risk_area_map()
     # ,province = get_province_list()
     )
 
